@@ -369,6 +369,7 @@ class Like(models.Model):
         return f'{self.user.username} likes {self.product.product_name}'
     
 class Review(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     evaluate = models.IntegerField(
         validators=[
             MaxValueValidator(5),  # 最大値を5に設定
