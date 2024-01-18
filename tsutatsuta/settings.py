@@ -15,6 +15,14 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Templateフォルダへの絶対パスを定義
+TEMPLATE_DIR = BASE_DIR / "Templates"
+
+# staticフォルダへの絶対パスを定義
+STATIC_DIR = BASE_DIR / "static"
+
+# メディアフォルダへの絶対パスを定義
+MEDIA_DIR = BASE_DIR / "media"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -55,7 +63,7 @@ ROOT_URLCONF = 'tsutatsuta.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,6 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Email設定
+# オンライン決済時にメールが自動送信できるような設定を追加
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -118,7 +129,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# cssファイル格納用のフォルダ
 STATIC_URL = '/static/'
+STATICFILES_DIRC = [STATIC_DIR]
+
+# 商品写真アップロード用のフォルダ
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -126,3 +143,12 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'Main.CustomUser'
+
+# Stripeのパブリックキー
+STRIPE_PUBLIC_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'
+
+# Stripeのシークレットキー
+STRIPE_SECRET_KEY = 'sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd'
+
+# StripeのWebhookのシークレットキー
+STRIPE_WEBHOOK_SECRET = 'ここにSTRIPE_WEBHOOK_SECRETを入力（現時点でここはまだ修正しなくてOKです）'

@@ -276,8 +276,10 @@ class Product(models.Model):
 
     product_name = models.CharField(max_length=255)
     description = models.TextField()
+    stripe_product_id = models.CharField(max_length=100)
     condition = models.CharField(max_length=10, choices=CONDITION_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    stripe_price_id = models.CharField(max_length=100)
     image = models.ImageField(upload_to="uploads/images/")
     gakubu_category = models.CharField(max_length=20, choices=FACULTY_CHOICES, default=Soujin)
     gakka_category = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES, default=Soujin_gakka)
