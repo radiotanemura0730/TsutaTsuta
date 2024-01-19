@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile_content">
+    <div class="usericon"><img src="{{ user.icon.url }}" alt="User Icon"></div>
+    <!-- <span class="username">{{ user.username }}</span> -->
+    <div class="username">たねむら</div>
+    <div class="user-details">
+        <div class="user_id">a0202251</div>
+        <div class="gakubu">理学部</div>
+        <div class="gakka"></div>
+        <div class="introduce">りゅうへいです。よろしくお願いいたします。</div>
+        <!-- <p>{{ user.user_id }}</p>
+        <p>{{ user.gakubu }}</p>
+        <p>{{ user.gakka }}</p>
+        <p>{{ user.introduce }}</p> -->
+    </div>
+    <div class="edit_profile">
+        <!-- {% if is_own_profile %}
+            <a href="ここでプロフィールを編集します">プロフィール編集</a>
+        {% endif %} -->
+        プロフィール編集
+    </div>
+</div>
+
+<div class="sold_product">
+    <ul>
+        <li>商品１</li>
+        <li>商品２</li>
+        <li>商品３</li>
+        <li>商品４</li>
+        <li>商品５</li>
+        <li>商品６</li>
+        <li>商品７</li>
+        <li>商品８</li>
+        <li>商品９</li>
+        <li>商品１０</li>
+        <li>商品１１</li>
+        <li>商品１２</li>
+    </ul>
+    <!-- {% for product in latest_user_products %}
+        <li>{{ product.product_name }} - {{ product.price }}</li>
+    {% endfor %} -->
+</div>
+{% endblock %}
+    

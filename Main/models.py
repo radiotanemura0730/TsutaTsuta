@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 def validate_postal_code(value):
     # 郵便番号のバリデーションロジック
@@ -20,6 +21,9 @@ def validate_number(value):
             code='invalid_building_number'
         )
     
+class Class(models.Model):
+    lecture = models.CharField(max_length=20)
+
 class CustomUser(AbstractUser):
     Soujin = "総合人間学部"
     Literature = "文学部"
@@ -281,6 +285,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="uploads/images/")
     gakubu_category = models.CharField(max_length=20, choices=FACULTY_CHOICES, default=Soujin)
     gakka_category = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES, default=Soujin_gakka)
+    classroom_category = models.ForeignKey(Class, on_delete=models.CASCADE, null=True, blank=True)
     seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -362,3 +367,14 @@ class Like(models.Model):
 
     def __str__(self):
         return f'{self.user.username} likes {self.product.product_name}'
+    
+class Review(models.Model):
+    evaluate = models.IntegerField(
+        validators=[
+            MaxValueValidator(5),  # 最大値を5に設定
+            MinValueValidator(1),  # 最小値を1に設定
+        ]
+    )
+    comment = models.TextField(max_length=200)
+
+
