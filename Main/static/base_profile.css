@@ -1,0 +1,115 @@
+header {
+    border-bottom: 1px solid black; /* 横線のスタイルを設定 */
+}
+
+.container {
+    height: 100%;
+}
+
+.header_content {
+    display: flex;
+    justify-content: space-between; /* head_left と head_right を左右に配置 */
+}
+
+.header_content .header_left {
+    display: flex;
+    justify-content: space-between;
+    margin-right: auto; 
+}
+
+.header_content .header_right {
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;  
+}
+
+/* tsutatsutaを黄緑色にする */
+.header_content .header_left .appname {
+    color: #1bba88; /* カラーコードは黄緑色に対応しています */
+    margin-top: 0;
+    margin-left: 10px;
+    margin-right: 5px;
+    font-size: 22px;
+}
+  
+  /* 検索ボックスのふちを丸くする */
+.header_content .header_left .searchbox input{
+    border-radius: 10px; /* 任意の値を指定してボーダーラジアスを設定 */
+    border: 2px solid #ccc; /* ボーダーのスタイルと色を指定 */
+    padding: 2px; /* 任意の値を指定して内側の余白を設定 */
+    margin-left: 5px;
+    margin-top: 5px;
+    width: 250px;
+    height: 18px;
+}
+  
+.header_content .header_right .user_info {
+    display: flex;
+    justify-content: center;
+    margin-right: 30px;
+}
+
+.header_content .header_right .user_info .username {
+    font-size: 13px;
+    color: grey;
+    margin-top: 5px;
+}
+
+  /* 出品のまわりを囲む箱を作成 */
+.header_content .header_right .sale {
+    border: 2px solid #8BC34A; /* ボーダーのスタイルと色を指定 */
+    padding: 6px; /* 任意の値を指定して内側の余白を設定 */
+    display: inline-block; /* インラインブロック要素にすることで、ボーダーが内容に合わせて表示されます */
+    border-radius: 8px; /* 任意の値を指定してボーダーラジアスを設定 */
+    height: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    border: 0px;
+    background-color: #1bba88;
+    color: white;
+    text-decoration: none;
+    margin-top: 2px;
+    margin-right: 12px;
+    margin-left: 10px;
+}
+
+.header_content .header_left .searchbox {
+    position: relative;
+}
+
+.header_content .header_left .searchbox .search_button {
+    position: absolute;
+    top: 9.5px;
+    right: 2.5px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+.header_content .header_right .notice .fa-bell{
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 8px;
+}
+
+.header_content .header_right .user_info .user_icon {
+    width: 25px; /* お好みのサイズに調整 */
+    height: 25px; /* お好みのサイズに調整 */
+    border-radius: 50%; /* 50%に設定することで円形になります */
+    overflow: hidden; /* 不要な部分を隠すために overflow: hidden を追加 */
+    margin-right: 10px;
+    object-fit: cover;
+    margin-top: 2px;
+}
+
+.header_content .header_right .user_info .user_icon img {
+    width: 200%; /* 画像を親要素に合わせて表示するための設定 */
+    height: auto; /* アスペクト比を維持するための設定 */
+    display: block; /* 不要な余白を取り除くための設定 */
+}
+
+/* ここまでヘッダーの要素 */
+
+
