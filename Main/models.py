@@ -102,6 +102,7 @@ class CustomUser(AbstractUser):
     icon = models.ImageField(upload_to="uploads/images/")
     gakubu = models.CharField(max_length=20, choices=FACULTY_CHOICES, default=Soujin) 
     gakka = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES, default=Soujin_gakka)
+    point = models.IntegerField(default=0)
 
     def __str__(self):
         return self.username

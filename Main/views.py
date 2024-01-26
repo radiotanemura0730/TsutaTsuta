@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from .forms import UserProfileForm
 from .models import CustomUser, Product, Review
 from decimal import Decimal
 from django.db.models import Sum
@@ -91,6 +92,23 @@ def settings(request, username):
 
     return render(request, 'settings.html', context)
 
+@login_required
+def edit_profile(request, username):
+    
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST, request.FILES, instance=user)
+
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('home_profile') 
+        
+    else:
+        user_form = UserProfileForm(instance=user)
+
+    return render(request, 'edit_profile.html', {'user_form': user_form})
+        
 
 
 
