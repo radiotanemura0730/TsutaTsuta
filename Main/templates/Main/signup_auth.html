@@ -2,9 +2,15 @@
 {% load static %}
 
 {% block extra_style %}
-    <link rel="stylesheet" href="{% static 'Main/css/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'Main/css/signup_auth.css' %}">
 {% endblock %}
 {% block header-title%}会員登録{% endblock %}
 
 {% block content %}
+<div class="content">
+    <div class="content-main">メールの認証</div>
+    <div class="content-sub">mailに送信された４桁のコードを入力してください。</div>
+    <div class="content-sub">受信していない場合は迷惑メールフォルダーを確認してください</div>
+    {{id}}
+</div>
 {% endblock %}

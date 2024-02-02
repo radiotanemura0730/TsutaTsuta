@@ -11,8 +11,7 @@
     <form class="form" method="post">
         {% csrf_token %}
         {{form.as_p}}
-        {{form.errors}}
-
+        
         <div class="form-consent"><a>プライバシーポリシー</a> / <a>利用規約</a> を確認して同意してください。</div>
         <div class="form-checkbox-wrap">
             <input class="form-checkbox-wrap__checkbox" type="checkbox" required>
