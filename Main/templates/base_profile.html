@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}メルカリ{% endblock %}</title>
+    <link rel="stylesheet" href="../../static/base_profile.css">
+    {% block css %}{% endblock %}
+    <link href="https://use.fontawesome.com/releases/v6.5.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header_content">
+        <div class="header_left">
+            <div class="appname">tsutatsuta</div>
+            <div class="searchbox">
+                <input type="text" placeholder="検索">
+                <button class="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+        <div class="header_right">
+            <div class="user_info">
+                {% if user.icon %}
+                    <div class="user_icon"><img src="{{ user.icon.url }}" alt="User Icon"></div>
+                {% else %}
+                    <div class="blank">アイコンなし</div>
+                {% endif %}
+                <span class="username">{{ user.username }}</span>
+            </div>
+            <div class="notice"><i class="fa-regular fa-bell"></i></div>
+            <a href="{% url 'index' %}" class="sale">
+                出品
+            </a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div> 
+</main>

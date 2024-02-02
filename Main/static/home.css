@@ -1,0 +1,241 @@
+body {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.header-upperContainer {
+    width: 1440px;
+    height: 48px;
+}
+
+.header-upperContainer_title {
+    color: #4abdac;
+    cursor: default;
+}
+
+.header-upperContainer_title {
+    width: 111px;
+    height: 24px;
+    top: 12px;
+    left: 24px;
+    display: block;
+    position: absolute;
+    font-size: 24px;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.header-upperContainer_search {
+    left: 145px;
+    top: 11px;
+    position: absolute;
+}
+
+.header-search_input {
+    width: 310px;
+    height: 25px;
+    position: absolute;
+    border-radius: 8px;
+    border: 1px solid #979797;
+    background-color: #f5f5f5;
+}
+
+.header-search_icon {
+    width: 24px;
+    height: 24px;
+    top: 1px;
+    position: relative;
+    left: 286px;
+    background: transparent;
+    border: none;
+}
+
+.header-upperContainer_box {
+    display: flex;
+    top: 10px;
+    left: 1222px;
+    width: 194px;
+    height: 28px;
+    position: absolute;
+    justify-content: space-between;
+}
+
+.header-box_user {
+    width: 88px;
+    height: 28px;
+    display: flex;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.header-user_icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    padding-top: 2px;
+}
+
+.header-uer_username {
+    width: 43px;
+    height: 24px;
+    padding-top: 2px;
+}
+
+.header-box_alert {
+    width: 29px;
+    height: 28px;
+    cursor: pointer;
+}
+
+.header-box_alert i{
+    position: relative;
+    width: 24px;
+    top: 2px;
+    left: 2px;
+    font-size: 24px;
+}
+
+.header-box_sell {
+    background-color: #4abdac;
+    width: 45px;
+    height: 28px;
+    border-radius: 8px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.header-upperContainer_menu {
+    left: 1047px;
+    top: 40px;
+    position: absolute;
+    width: 263px;
+    height: 204px;
+    border: 1px solid black;
+    border-radius: 8px;
+    z-index: 100;
+    background: #fff;
+}
+
+.header-upperContainer_menu a{
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    padding-top: 8px;
+    padding-left: 8px;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
+
+.header-upperContainer_menu a:nth-child(5) {
+    border-bottom: none;
+    color: #b00020;
+    text-align: center;
+    width: 247px;
+    display: block;
+}
+
+.header-upperContainer_menu a span {
+    position: absolute;
+    right: 8px;
+    transform: scale(1,2);
+}
+
+.header-underContainer {
+    top: 49px;
+    width: 1440px;
+    height: 48px;
+    border-bottom: 1px solid #5f5a5a;
+}
+
+.header-underContainer_tab {
+    display: block;
+    position: relative;
+    top: 8px;
+    left: 0;
+    width: 110px;
+    height: 40px;
+    text-align: center;
+    border-bottom: #4abdac 4px solid;
+    box-sizing: border-box;
+    padding: 8px 23px;
+    cursor: default;
+}
+
+.content {
+    height: 267px;
+}
+
+.content-label {
+    position: relative;
+    top: 24px;
+    left: 24px;
+    width: 65px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    cursor: default;
+}
+
+.content-category {
+    width: 225px;
+    height: 16px;
+    top: 24px;
+    left: 23px;
+    position: relative;
+    font-size: 12px;
+    color: #3763FF;
+    cursor: default;
+}
+
+.content-category span {
+    color: black;
+}
+
+.content-productsList {
+    position: relative;
+    top: 24px;
+    display: flex;
+    justify-content: left;
+    height: 200px;
+}
+
+.content-productsList_product {
+    height: 200px;
+    width: 194px;
+    position: relative;
+    font-size: 16px;
+}
+
+.content-product_image {
+    position: absolute;
+    height: 160px;
+    width: 160px;
+    left: 17px;
+}
+
+.content-product_price {
+    position: absolute;
+    width: 159px;
+    height: 24px;
+    top: 160px;
+    left: 18px;
+}
+
+.content-product_name {
+    position: absolute;
+    width: 159px;
+    height: 24px;
+    left: 18px;
+    top: 177px;
+}
+
+.hidden {
+    visibility: hidden !important;
+    display: none;
+}

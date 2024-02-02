@@ -1,0 +1,99 @@
+{% extends 'base_profile.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="../../static/home_profile.css">
+{% endblock %}
+
+{% block content %}
+<div class="gap"></div>
+<div class="main_content">
+    <div class="left">
+        <div class="navigation">
+            <div class="management">
+                <div class="navigation_title">
+                    <div class="text">商品管理</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">出品した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">いいねした商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">購入した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>             
+                <div class="navigation_content">
+                    <div class="text">下書き</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+            <div class="settings">
+                <div class="navigation_title">
+                    <div class="text">設定・ポイント</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">個人情報設定</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">ポイント履歴</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+            <div class="policy">
+                <div class="navigation_title">
+                    <div class="text">規約・ポリシー</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">規約等</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">プライバシーポリシー</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="profile_box">
+            <div class="icon_box">
+                <div class="usericon">
+                    <img src="{{ user.icon.url }}" alt="User Icon">
+                </div>
+            </div>
+            <div class="username_box">
+                <div class="username">{{ user.username }}</div>
+                <div class="user_arrow"><i class="fa-solid fa-angle-right"></i></div>  
+            </div>
+            <div class="review_box">
+                <div class="review">
+                    {% for a in average_rating %}
+                        <div class="filled_star"><i class="fa-solid fa-star"></i></div>
+                    {% endfor %}
+                    {% for a in subtract_rating %}
+                        <div class="empty_star"><i class="fa-regular fa-star"></i></div>
+                    {% endfor%}   
+                </div>
+                <div class="review_number">{{ review_number }}</div>
+                <div class="review_arrow"><i class="fa-solid fa-angle-right"></i></div>
+            </div>
+            <div class="sale_box">
+                <div class="sale">
+                    <div class="sale_text">今までの<br>累計売上額</div>
+                    <div class="rectangle"></div>
+                    <div class="sale_content">￥{{ total_profit }}</div>
+                </div>
+                <div class="point">
+                    <div class="point_text">所持ポイント</div>
+                    <div class="rectangle"></div>
+                    <div class="point_content">Pポイント</div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% endblock %}
