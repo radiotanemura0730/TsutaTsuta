@@ -1,0 +1,41 @@
+.back {
+    width: 1440px;
+    height: 48px;
+    top: 48px;
+    position: absolute;
+}
+
+.back a {
+    width: 24px;
+    height: 24px;
+    top: 12px;
+    left: 16px;
+    text-decoration: none;
+    color: black;
+    transform: scale(1,2);
+    position: absolute;
+}
+
+.image {
+    width: 791px;
+    height: 1633px;
+    top: 96px;
+    left: -1px;
+    position: absolute;
+}
+
+.image img {
+    width: 581px;
+    height: 582px;
+    top: 40px;
+    left: 210px;
+    position: relative;
+}
+
+.info {
+    width: 635px;
+    height: 1593px;
+    top: 136px;
+    left: 790px;
+    position: absolute;
+}
