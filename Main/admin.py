@@ -1,7 +1,16 @@
 from django.contrib import admin
 
-from .models import (Address, Class, Comment, CustomUser, Draft, Like, Product,
-                     Review, Transaction)
+from Main.models import (
+    Address,
+    Class,
+    Comment,
+    CustomUser,
+    Draft,
+    Like,
+    Product,
+    Review,
+    Transaction,
+)
 
 admin.site.register(CustomUser)
 admin.site.register(Product)
