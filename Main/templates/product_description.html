@@ -1,0 +1,14 @@
+{% extends 'base_profile.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'product_description.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="back"><a href="{% url 'home' %}"><</a></div>
+    <div class="image"><img src="{{ product.image.url }}" alt="product image"></div>
+    <div class="info">
+        {{ product.product_name }}
+    </div>
+{% endblock %}
