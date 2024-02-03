@@ -14,4 +14,7 @@ urlpatterns = [
         views.product_description,
         name="product_description",
     ),
+    path("edit_profile/<str:username>/", views.edit_profile, name="edit_profile"),
+    path("delete_profile/<str:username>/", views.delete_profile, name="delete_profile"),
+    path("delete_confirm/", views.delete_confirm, name="delete_confirm"),
 ]

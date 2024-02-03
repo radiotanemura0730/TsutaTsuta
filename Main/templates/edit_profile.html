@@ -1,13 +1,82 @@
-{% extends 'base_profile.html' %}
+{% extends 'base_profile2.html' %}
+
+{% block css %}<link rel="stylesheet" href="../../static/edit_profile.css">{% endblock %}
 
 {% block content %}
-  <h2>Edit Profile</h2>
-
-  <form method="post" enctype="multipart/form-data">
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="settings_title">プロフィール設定</div>
+</div>
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <div class="form_container">
+        <div class="icon_container">
+            <label for="id_icon" class="icon_label">画像</label>
+            <div class="icon_display">
+                <img src="{{ user.icon.url }}" alt="User Icon" class="icon_content">
+                <input type="file" name="icon" accept="image/*" id="id_icon" class="form-control-file">
+                <div class="icon_button">
+                    <label for="id_icon" class="icon_button_label">画像を変更する</label>
+                </div> 
+            </div>             
+        </div>
+        {% with form=user_form %}
+            <div class="username_container">
+                <label for="id_username">ユーザーネーム</label>
+                <div class="username_field">{{ form.username }}</div>
+            </div>
 
-    {{ user_form.as_p }}
+            <div class="user_id_container">
+                <label for="id_user_id">ユーザーID</label>
+                <div class="user_id_field">{{ form.user_id }}</div>
+            </div>
 
-    <button type="submit">更新する</button>
-  </form>
+            <div class="gakubu_container">
+                <label for="id_gakubu">学部</label>
+                <div class="gakubu_field">{{ form.gakubu }}</div>
+                <div class="triangle"><i class="fa-solid fa-caret-down"></i></div>
+            </div>
+
+            <div class="gakka_container">
+                <label for="id_gakka">学科</label>
+                <div class="gakka_field">{{ form.gakka }}</div>
+                <div class="triangle"><i class="fa-solid fa-caret-down"></i></div>
+            </div>
+
+            <div class="introduce_container">
+                <label for="id_introduce">自己紹介文</label>
+                <div class="introduce_field">
+                    <div class="introduce_content">{{ form.introduce }}</div>
+                    <div class="introduce_length"><span id="char_count">0</span>/300</div>
+                </div>
+            </div>
+        {% endwith %}
+
+        <button type="submit" class="submit_button_icon">更新する</button>
+    </div>
+</form>
+
+<script>
+    // テキストエリアの要素を取得
+    var textarea = document.getElementById('id_introduce');
+    // 文字数を表示する要素を取得
+    var charCount = document.getElementById('char_count');
+
+    // テキストエリアの内容が変更されたときに実行される関数
+    textarea.addEventListener('input', function() {
+        // テキストエリアの内容を取得
+        var text = textarea.value;
+        // 文字数を数える
+        var count = text.length;
+        // 文字数を表示する要素に反映
+        charCount.textContent = count;
+    });
+
+
+</script>
+
 {% endblock %}
+
+

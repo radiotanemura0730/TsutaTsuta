@@ -1,0 +1,54 @@
+{% extends 'base_profile2.html' %}
+
+{% block css %}<link rel="stylesheet" href="../../static/delete_profile.css">{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="delete_title">アカウント削除</div>
+</div>
+
+
+<div class="message_container">
+    <div class="message_box">
+        <div class="delete_message">この作業は取り消せません。<br>アカウントを本当に削除しますか。</div>
+    </div>
+</div>
+
+<div class="delete_content_container">
+    <div class="user_details_box">
+        <div class="upper_box">
+            <div class="usericon">
+                <img src="{{ user.icon.url }}" alt="User Icon">
+            </div>
+            <div class="upper_right_box">
+                <div class="username">{{ user.username }}</div>             
+                <div class="user_id">{{ user.user_id }}</div>
+                <div class="review_box">
+                    <div class="review">
+                        {% for a in average_rating %}
+                            <div class="filled_star"><i class="fa-solid fa-star"></i></div>
+                        {% endfor %}
+                        {% for a in subtract_rating %}
+                            <div class="empty_star"><i class="fa-regular fa-star"></i></div>
+                        {% endfor%}   
+                    </div>
+                    <div class="review_number">{{ review_number }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="lower_box">
+            <div class="faculty">{{ user.gakubu }}{{ user.gakka }}</div>
+            <div class="introduce"> {{ user.introduce }} </div>
+        </div>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="delete_button">削除する</button>
+</form>
+
+{% endblock %}
