@@ -1,0 +1,243 @@
+.container {
+    width: 100%;
+}
+
+.container .gap {
+    height: 48px;
+    width: 100%;
+}
+
+.container .main_content {
+    width: 100%;
+    height: 927px;
+    display: flex;
+}
+
+.container  .main_content .left {
+    width: 411px;
+    height: 440px;
+}
+
+.container  .main_content .right {
+    width: 1003px;
+    height: 927px;
+}
+
+/* ここまで全体のプロフィール画面の大きな構成 */
+
+.container .main_content .left .navigation .management {
+    height: 200px;
+}
+
+.container .main_content .left .navigation .settings {
+    height: 120px;
+}
+
+.container .main_content .left .navigation .policy {
+    height: 120px;
+}
+
+/* ここまで画面左部の大きな構成 */
+
+.navigation_title {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    font-size: 24px;
+    border-bottom: 1px solid black;
+}
+
+.navigation_content {
+    height: 40px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+
+.right_arrow {
+    margin-right: 10px;
+}
+
+.text {
+    margin-left: 15px;
+}
+
+a {
+    text-decoration: none; /* 下線をなくす */
+    color: inherit; /* 親要素からの継承されたカラーを使用 */
+}
+
+/* ここから画面右部の装飾 */
+
+.right {
+    position: relative;
+}
+
+.profile_box {
+    position: absolute;
+    top: 0;
+    left: 250px;
+    height: 400px;
+    width: 527px;
+}
+
+/* アイコン周りの装飾 */
+
+.icon_box {
+    position: absolute;
+    top: 29px;
+    left: 183px;
+    width: 160px; /* お好みのサイズに調整 */
+    height: 160px; /* お好みのサイズに調整 */
+}
+
+.usericon {
+    width: 160px; /* お好みのサイズに調整 */
+    height: 160px; /* お好みのサイズに調整 */
+    border-radius: 50%; /* 50%に設定することで円形になります */
+    overflow: hidden; /* 不要な部分を隠すために overflow: hidden を追加 */
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.usericon img {
+    width: 200%; /* 画像を親要素に合わせて表示するための設定 */
+    height: auto; /* アスペクト比を維持するための設定 */
+    display: block; /* 不要な余白を取り除くための設定 */ 
+}
+
+/* ここからユーザーネーム周りの装飾 */
+
+.username_box {
+    position: absolute;
+    top: 213px;
+    height: 25px;
+    width: 100%;
+    display: flex;
+    justify-content: center;  
+}
+
+.main_content .right .profile_box .username_box .username {
+    font-size: 24px;
+}
+
+.user_arrow {
+    font-size: 24px;
+}
+
+/* ここから評価の装飾 */
+
+.review_box {
+    position: absolute;
+    top: 254px;
+    width: 100%;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review {
+    display: flex;
+}
+
+.empty_star {
+    font-size: 36px;
+    margin-left: 7.29px;
+    margin-right: 7.29px;
+}
+
+.filled_star {
+    font-size: 36px;
+    margin-left: 7.29px;
+    margin-right: 7.29px;
+}
+
+.review_number {
+    font-size: 24px;
+}
+
+.review_arrow {
+    font-size: 24px;
+}
+
+/* ここから売上額・ポイントの装飾 */
+
+.sale_box {
+    position: absolute;
+    left: 28px;
+    top: 314px;
+    height: 60px;
+    width: 471px;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+.sale_box .sale .sale_text{
+    position: absolute;
+    left: 29px;
+    top: 10px;
+    height: 40px;
+    width: 71px;
+    font-size: 14px;
+}
+
+.sale_text {
+    line-height: 20px;
+    font-size: 14px;
+}
+
+.sale_box .rectangle {
+    position: absolute;
+    left: 110px;
+    top: 10px;
+    height: 38px;
+    width: 8px;
+    background-color: #D9D9D9;
+}
+
+.sale_content {
+    position: absolute;
+    left: 128px;
+    top: 19px;
+    width: 120px;
+    height: 24px;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.point_text {
+    position: absolute;
+    left: 271px;
+    top: 20px;
+    width: 86px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.point .rectangle {
+    position: absolute;
+    top: 11px;
+    left: 365px;
+    height: 38px;
+    width: 8px;
+    background-color: #D9D9D9;
+}
+
+.point_content {
+    position: absolute;
+    top: 18px;
+    left: 383px;
+    height: 24px;
+    width: 100px;
+    white-space: nowrap;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+
+
+

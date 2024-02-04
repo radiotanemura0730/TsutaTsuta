@@ -1,0 +1,22 @@
+{% extends 'base_profile2.html' %}
+
+{% block css %}<link rel="stylesheet" href="../../static/delete_confirm.css">{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="delete_title">アカウント削除</div>
+</div>
+
+<div class="deleted_message_container">
+    <div class="deleted_messsage">アカウントが削除されました。</div>
+</div>
+
+<div class="button_container">
+    <div class="back_to_login_button"><a href="{% url 'index' %}" class="link_to_login">ログイン画面へ</a></div>
+</div>
+
+
+{% endblock %}
