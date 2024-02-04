@@ -256,3 +256,98 @@ def bought_products(request, username):
     }
 
     return render(request, "bought_products.html", context)
+
+
+@login_required
+def liked_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"user": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            user_likes = Like.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm()
+        user_likes = Like.objects.filter(user=user)
+
+    liked_products = [like.product for like in user_likes]
+
+    context = {"user": user, "liked_products": liked_products, "form": form}
+
+    return render(request, "liked_products.html", context)
+
+
+@login_required
+def bought_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"buyer": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            bought_products = Transaction.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm(request.POST)
+        bought_products = Like.objects.filter(user=user)
+
+    context = {
+        "user": user,
+        "bought_products": bought_products,
+        "form": form,
+    }
+
+    return render(request, "bought_products.html", context)
+
+from django.shortcuts import render
+from django.conf import settings
+from django.views import View
+from django.views.generic import TemplateView
+from .models import Product
+from django.shortcuts import redirect
+import stripe
+# Create your views here.
+
+def payment_information(request):
+    template_name = "payment_information.html"
+    return render(request, template_name)
+
+# # WEBHOOKのシークレットキー
+# endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+def create_card(request):
+    user = request.user
+    # セッションを開始するため、STRIPEのシークレットキーをセットする
+    stripe.api_key = settings.STRIPE_API_KEY
+
+    # Customerオブジェクトを作成（引数は任意）
+    stripe_customer = stripe.Customer.create(
+        name=user.username
+    )
+    # SetupIntentオブジェクト生成
+    setup_intent = stripe.SetupIntent.create(
+        customer=stripe_customer.id,# 生成したCustomerのIDを指定
+        payment_method_types=["card"],# 支払い方法→今回はクレジットカード（"card"）
+        )
+        # 作成したSetupIntentからclient_secretを取得する→テンプレートへ渡す
+    context = {
+        "client_secret": setup_intent.client_secret,
+    }
+    template_name = 'create_card.html'
+    return render(request, template_name, context)
+
+def thanks(request):
+    template_name = 'thanks.html'
+    return render(request, template_name)
