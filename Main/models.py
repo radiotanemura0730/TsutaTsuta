@@ -300,6 +300,7 @@ class Product(models.Model):
     )
     seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.product_name

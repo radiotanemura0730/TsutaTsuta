@@ -5,8 +5,8 @@ from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import UserProfileForm
-from .models import Class, CustomUser, Product, Review, Transaction
+from .forms import AvailableProductsForm, UserProfileForm
+from .models import Class, CustomUser, Like, Product, Review, Transaction
 
 
 def index(request):
@@ -202,6 +202,114 @@ def product_description(request, product_id):
 
 def delete_confirm(request):
     return render(request, "delete_confirm.html")
+
+
+@login_required
+def liked_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"user": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            user_likes = Like.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm()
+        user_likes = Like.objects.filter(user=user)
+
+    liked_products = [like.product for like in user_likes]
+
+    context = {"user": user, "liked_products": liked_products, "form": form}
+
+    return render(request, "liked_products.html", context)
+
+
+@login_required
+def bought_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"buyer": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            bought_products = Transaction.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm(request.POST)
+        bought_products = Like.objects.filter(user=user)
+
+    context = {
+        "user": user,
+        "bought_products": bought_products,
+        "form": form,
+    }
+
+    return render(request, "bought_products.html", context)
+
+
+@login_required
+def liked_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"user": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            user_likes = Like.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm()
+        user_likes = Like.objects.filter(user=user)
+
+    liked_products = [like.product for like in user_likes]
+
+    context = {"user": user, "liked_products": liked_products, "form": form}
+
+    return render(request, "liked_products.html", context)
+
+
+@login_required
+def bought_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"buyer": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            bought_products = Transaction.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm(request.POST)
+        bought_products = Like.objects.filter(user=user)
+
+    context = {
+        "user": user,
+        "bought_products": bought_products,
+        "form": form,
+    }
+
+    return render(request, "bought_products.html", context)
 
 from django.shortcuts import render
 from django.conf import settings

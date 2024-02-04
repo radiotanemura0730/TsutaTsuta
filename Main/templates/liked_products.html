@@ -1,0 +1,93 @@
+{% extends 'base_profile.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="../../static/liked_products.css">
+{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="liked_product_title">いいねした商品</div>
+</div>
+<div class="main_content">
+    <div class="left">
+        <div class="navigation">
+            <div class="management">
+                <div class="navigation_title">
+                    <div class="text">商品管理</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">出品した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">いいねした商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">購入した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>             
+                <div class="navigation_content">
+                    <div class="text">下書き</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+            <div class="settings">
+                <div class="navigation_title">
+                    <div class="text">設定・ポイント</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">個人情報設定</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">ポイント履歴</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+            <div class="policy">
+                <div class="navigation_title">
+                    <div class="text">規約・ポリシー</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">規約等</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">プライバシーポリシー</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="checkbox_container">
+            <form method="post">
+                <div class="form_container">
+                    <div class="checkbox">
+                        {% csrf_token %}
+                        {{ form }}
+                    </div>
+                    <div class="submit_box">
+                        <button type="submit" class="submit_button">表示を切り替える</button>
+                    </div>
+                </div>   
+            </form>   
+        </div>
+        <div class="liked_products_container">
+                {% for product in liked_products %}
+                    <div class="liked_product_box">
+                        <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                        <div class="product_name">{{ product.product_name }}</div>
+                        <div class="product_price">￥{{ product.price }}</div>
+                        <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                        <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>             
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
