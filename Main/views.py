@@ -87,14 +87,14 @@ def home_profile(request, username):
 
 
 @login_required
-def settings(request, username):
+def user_settings(request, username):
     user = get_object_or_404(CustomUser, username=username)
 
     context = {
         "user": user,
     }
 
-    return render(request, "settings.html", context)
+    return render(request, "user_settings.html", context)
 
 
 @login_required
@@ -202,6 +202,7 @@ def product_description(request, product_id):
 
 def delete_confirm(request):
     return render(request, "delete_confirm.html")
+
 from django.shortcuts import render
 from django.conf import settings
 from django.views import View
@@ -211,13 +212,17 @@ from django.shortcuts import redirect
 import stripe
 # Create your views here.
 
-# WEBHOOKのシークレットキー
-endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+def payment_information(request):
+    template_name = "payment_information.html"
+    return render(request, template_name)
 
-def credit_card(request):
+# # WEBHOOKのシークレットキー
+# endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+def create_card(request):
     user = request.user
     # セッションを開始するため、STRIPEのシークレットキーをセットする
-    stripe.api_key = settings.STRIPE_SECRET_KEY
+    stripe.api_key = settings.STRIPE_API_KEY
 
     # Customerオブジェクトを作成（引数は任意）
     stripe_customer = stripe.Customer.create(
@@ -232,6 +237,9 @@ def credit_card(request):
     context = {
         "client_secret": setup_intent.client_secret,
     }
-    template_name = 'create_card_information.html'
+    template_name = 'create_card.html'
     return render(request, template_name, context)
 
+def thanks(request):
+    template_name = 'thanks.html'
+    return render(request, template_name)

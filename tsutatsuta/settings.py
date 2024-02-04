@@ -60,7 +60,7 @@ ROOT_URLCONF = "tsutatsuta.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,3 +136,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "Main.CustomUser"
 
 GIT_PATH = "/usr/bin/git"
+
+STRIPE_API_KEY = 'sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'
