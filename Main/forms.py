@@ -21,3 +21,13 @@ class UserDeleteForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = "__all__"
+
+
+class AvailableProductsForm(forms.Form):
+    show_available = forms.BooleanField(
+        label="販売中のみ表示",
+        label_suffix="",
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(),
+    )
