@@ -23,4 +23,6 @@ urlpatterns = [
     ),
     path("payment_information/", views.payment_information, name="payment_information"),
     path("create_card/", views.create_card, name="create-card-information"),
+    path("privacy_policy/", views.privacy_policy, name="privacy_policy"),
+    path("rules/", views.rules, name="rules"),
 ]
