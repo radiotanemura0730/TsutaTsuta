@@ -294,3 +294,11 @@ def create_card(request):
 def thanks(request):
     template_name = "thanks.html"
     return render(request, template_name)
+
+
+def privacy_policy(request):
+    return render(request, "privacy_policy.html")
+
+
+def rules(request):
+    return render(request, "rules.html")
