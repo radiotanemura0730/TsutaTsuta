@@ -31,3 +31,13 @@ class AvailableProductsForm(forms.Form):
         initial=False,
         widget=forms.CheckboxInput(),
     )
+
+
+class OnTransactionProductsForm(forms.Form):
+    show_available = forms.BooleanField(
+        label="出品中のみ表示",
+        label_suffix="",
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(),
+    )
