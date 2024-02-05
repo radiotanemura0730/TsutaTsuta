@@ -22,5 +22,5 @@ urlpatterns = [
         "bought_products/<str:username>", views.bought_products, name="bought_products"
     ),
     path("payment_information/", views.payment_information, name="payment_information"),
-    path("create_card/", views.create_card, name="create-card-information"), # クレジットカード登録
+    path("create_card/", views.create_card, name="create-card-information"),
 ]
