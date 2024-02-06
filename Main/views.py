@@ -1,11 +1,14 @@
 from decimal import Decimal
 
+import stripe
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
-from .forms import UserProfileForm, SignUpForm
-from .models import Class, CustomUser, Product, Review, Transaction
+from .forms import UserProfileForm, SignUpForm, AvailableProductsForm, OnTransactionProductsForm
+from .models import Class, CustomUser, Product, Review, Transaction, Like
 from django.views.generic import CreateView, TemplateView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
@@ -58,7 +61,7 @@ def profile(request, username):
         average_rate = list(range(average_rating))
         subtract_rating = list(range(5 - average_rating))
     else:
-        average_rating = None
+        average_rate = None
         subtract_rating = list(range(5))
 
     review_number = len(reviews)
@@ -92,7 +95,7 @@ def home_profile(request, username):
         average_rate = list(range(average_rating))
         subtract_rating = list(range(5 - average_rating))
     else:
-        average_rating = None
+        average_rate = None
         subtract_rating = list(range(5))
 
     review_number = len(reviews)
@@ -115,14 +118,14 @@ def home_profile(request, username):
 
 
 @login_required
-def settings(request, username):
+def user_settings(request, username):
     user = get_object_or_404(CustomUser, username=username)
 
     context = {
         "user": user,
     }
 
-    return render(request, "settings.html", context)
+    return render(request, "user_settings.html", context)
 
 
 @login_required
@@ -134,12 +137,54 @@ def edit_profile(request, username):
 
         if user_form.is_valid():
             user_form.save()
-            return redirect("home_profile")
+            return redirect(reverse("home_profile", args=[username]))
 
     else:
         user_form = UserProfileForm(instance=user)
 
     return render(request, "edit_profile.html", {"user_form": user_form})
+
+
+@login_required
+def delete_profile(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    is_own_profile = user == request.user
+
+    user_products = Product.objects.filter(seller=user)
+
+    reviews = Review.objects.filter(user=user)
+
+    if reviews.exists():
+        average_rating = sum([review.evaluate for review in reviews]) / len(reviews)
+        average_rating = round(average_rating, 0)
+        average_rating = int(average_rating)
+        average_rate = list(range(average_rating))
+        subtract_rating = list(range(5 - average_rating))
+    else:
+        average_rate = None
+        subtract_rating = list(range(5))
+
+    review_number = len(reviews)
+
+    latest_user_products = user_products.order_by("-created_at")[:6]
+    relatively_latest_user_products = user_products.order_by("-created_at")[6:12]
+
+    if request.method == "POST":
+        user.delete()
+        return redirect("index")
+
+    context = {
+        "user": user,
+        "is_own_profile": is_own_profile,
+        "latest_user_products": latest_user_products,
+        "relatively_latest_user_products": relatively_latest_user_products,
+        "average_rating": average_rate,
+        "subtract_rating": subtract_rating,
+        "review_number": review_number,
+    }
+
+    return render(request, "delete_profile.html", context)
 
 
 @login_required
@@ -184,3 +229,105 @@ def product_description(request, product_id):
         "review": review,
     }
     return render(request, "product_description.html", context)
+
+
+def delete_confirm(request):
+    return render(request, "delete_confirm.html")
+
+
+@login_required
+def liked_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = AvailableProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"user": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            user_likes = Like.objects.filter(**available_filter)
+
+    else:
+        form = AvailableProductsForm()
+        user_likes = Like.objects.filter(user=user)
+
+    liked_products = [like.product for like in user_likes]
+
+    context = {"user": user, "liked_products": liked_products, "form": form}
+
+    return render(request, "liked_products.html", context)
+
+
+@login_required
+def bought_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        form = OnTransactionProductsForm(request.POST)
+        if form.is_valid():
+            available_filter = {"buyer": user}
+
+            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
+            if form.cleaned_data["show_available"]:
+                available_filter["product__is_available"] = True
+
+            bought_products = Transaction.objects.filter(**available_filter)
+
+    else:
+        form = OnTransactionProductsForm(request.POST)
+        bought_products = Transaction.objects.filter(buyer=user)
+
+    bought_products = [transaction.product for transaction in bought_products]
+
+    context = {
+        "user": user,
+        "bought_products": bought_products,
+        "form": form,
+    }
+
+    return render(request, "bought_products.html", context)
+
+
+def payment_information(request):
+    template_name = "payment_information.html"
+    return render(request, template_name)
+
+
+# # WEBHOOKのシークレットキー
+# endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+
+def create_card(request):
+    user = request.user
+    # セッションを開始するため、STRIPEのシークレットキーをセットする
+    stripe.api_key = settings.STRIPE_API_KEY
+
+    # Customerオブジェクトを作成（引数は任意）
+    stripe_customer = stripe.Customer.create(name=user.username)
+    # SetupIntentオブジェクト生成
+    setup_intent = stripe.SetupIntent.create(
+        customer=stripe_customer.id,  # 生成したCustomerのIDを指定
+        payment_method_types=["card"],  # 支払い方法→今回はクレジットカード（"card"）
+    )
+    # 作成したSetupIntentからclient_secretを取得する→テンプレートへ渡す
+    context = {
+        "client_secret": setup_intent.client_secret,
+    }
+    template_name = "create_card.html"
+    return render(request, template_name, context)
+
+
+def thanks(request):
+    template_name = "thanks.html"
+    return render(request, template_name)
+
+
+def privacy_policy(request):
+    return render(request, "privacy_policy.html")
+
+
+def rules(request):
+    return render(request, "rules.html")

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('Main', '0004_review_user'),
+        ("Main", "0004_review_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='customuser',
-            name='point',
+            model_name="customuser",
+            name="point",
             field=models.IntegerField(default=0),
         ),
     ]
