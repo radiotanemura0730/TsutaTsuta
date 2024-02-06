@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.utils import timezone
+
 
 
 def validate_postal_code(value):
@@ -27,6 +29,21 @@ class Class(models.Model):
 
 
 class CustomUser(AbstractUser):
+    # 書き換え
+    username = models.CharField(
+        _("username"),
+        max_length=150,
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+    )
+    email = models.EmailField(_("email address"), unique=True, blank=True)
+    #認証
+    # auth_number = models.IntegerField()
+
     Soujin = "総合人間学部"
     Literature = "文学部"
     Education = "教育学部"

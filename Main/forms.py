@@ -1,7 +1,16 @@
 from django import forms
 
 from .models import CustomUser
+from django.contrib.auth.forms import UserCreationForm
 
+class SignUpForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = ("email", "password1", "password2")
+    
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
