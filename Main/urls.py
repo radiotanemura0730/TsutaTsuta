@@ -15,6 +15,7 @@ urlpatterns = [
         name="product_description",
     ),
     path("edit_profile/<str:username>/", views.edit_profile, name="edit_profile"),
+    path("edit_address/<str:username>/", views.edit_address, name="edit_address"),
     path("delete_profile/<str:username>/", views.delete_profile, name="delete_profile"),
     path("delete_confirm/", views.delete_confirm, name="delete_confirm"),
     path("liked_products/<str:username>/", views.liked_products, name="liked_products"),

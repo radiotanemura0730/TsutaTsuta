@@ -1,0 +1,83 @@
+{% extends 'base_profile2.html' %}
+
+{% block css %}<link rel="stylesheet" href="../../static/edit_profile.css">{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="settings_title">住所の登録</div>
+</div>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form_container">
+        {% with form=user_form %}
+        <div class="real_name_container">
+            <div class="real_name_last">
+                <label for="id_last_name">姓（全角）</label>
+                <div class="last_name_field">{{ form.last_name }}</div>
+            </div>
+            <div class="real_name_first">
+                <label for="id_first_name">名（全角）</label>
+                <div class="first_name_field">{{ form.first_name }}</div>
+            </div>
+            <div class="real_name_last_kana">
+                <label for="id_last_name">姓カナ（全角）</label>
+                <div class="last_name_field">{{ form.last_name_kana }}</div>
+            </div>
+            <div class="real_name_first_kana">
+                <label for="id_first_name">名カナ（全角）</label>
+                <div class="first_name_field">{{ form.first_name_kana }}</div>
+            </div>
+        </div> <!-- real_name_container -->
+        <div class="address_container">
+            <div class="post">
+                <label for="id_post">郵便番号</label>
+                <div class="post_field">{{ form.post }}</div>
+            </div>
+            <div class="post">
+                <label for="id_prefecture">都道府県</label>
+                <div class="prefecture">{{ form.prefecture }}</div>
+            </div>
+            <div class="post">
+                <label for="id_city">市区町村</label>
+                <div class="city_field">{{ form.city }}</div>
+            </div>
+            <div class="post">
+                <label for="id_house_number">番地</label>
+                <div class="house_number_field">{{ form.house_number }}</div>
+            </div>
+            <div class="post">
+                <label for="id_building">建物名</label>
+                <div class="building_field">{{ form.post }}</div>
+            </div>
+        </div>
+        {% endwith %}
+
+        <button type="submit" class="submit_button_icon">更新する</button>
+    </div>
+</form>
+
+<script>
+    // テキストエリアの要素を取得
+    var textarea = document.getElementById('id_introduce');
+    // 文字数を表示する要素を取得
+    var charCount = document.getElementById('char_count');
+
+    // テキストエリアの内容が変更されたときに実行される関数
+    textarea.addEventListener('input', function() {
+        // テキストエリアの内容を取得
+        var text = textarea.value;
+        // 文字数を数える
+        var count = text.length;
+        // 文字数を表示する要素に反映
+        charCount.textContent = count;
+    });
+
+
+</script>
+
+{% endblock %}
+
+

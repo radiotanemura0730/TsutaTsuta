@@ -1,27 +1,48 @@
 {% extends 'base_profile2.html' %}
 
-{% block title %}支払い情報{% endblock %}
-
-
-{% block css %}
-    <link rel="stylesheet" href="../../static/profile.css">
-    <!-- <link rel="stylesheet" href="../static/payment_information.css"> -->
-
-{% endblock %}
-
-{% block header%}支払い設定{% endblock %}
+{% block css %}<link rel="stylesheet" href="../../static/payment_information.css">{% endblock %}
 
 {% block content %}
-    <input type="radio" id="credit" value="credit" checked>
-    <label for="credit">クレジットカード決済</label><br>
-    <input type="radio" id="softbank" value="softbank" checked>
-    <label for="softbank">ソフトバンクまとめて支払い<br>
-        手数料 ￥100-880
-    </label><br>
-    <input type="radio" id="convenient_or_ATM" value="convenient_or_ATM" checked>
-    <label for="convenient_or_ATM">コンビニ/ATM支払い<br>
-        手数料 ￥100-880</label><br>
-    <input type="radio" id="paypay" value="paypay" checked>
-    <label for="paypay">PAYPAY支払い<br>
-        手数料 ￥100-880</label>
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="settings_title">支払い設定</div>
+</div>
+<div class="payment_content">
+    <div class="option">
+        <input type="radio" id="credit" value="credit">
+        <label for="credit">クレジットカード決済（手数料￥0）</label>
+    </div>
+    <div class="option">
+        <input type="radio" id="softbank" value="softbank">
+        <label for="softbank">ソフトバンクまとめて支払い<br>
+            手数料 ￥100-880
+        </label>
+    </div>
+    <div class="option">
+        <input type="radio" id="convenient_or_ATM" value="convenient_or_ATM">
+        <label for="convenient_or_ATM">コンビニ/ATM支払い<br>
+            手数料 ￥100-880</label><br>
+    </div>
+    <div class="option">
+        <input type="radio" id="paypay" value="paypay">
+        <label for="paypay">PAYPAY支払い<br>
+            手数料 ￥100-880</label>     
+    </div>
+    <button type="submit" class="submit_button_icon">更新する</button>
+</div>
 {% endblock %}
+
+<script>
+var remove = 0;
+
+function radioDeselection(already, numeric) {
+  if(remove == numeric) {
+    already.checked = false;
+    remove = 0;
+  } else {
+    remove = numeric;
+  }
+}
+</script>

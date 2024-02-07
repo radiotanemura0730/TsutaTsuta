@@ -191,6 +191,10 @@ class Address(models.Model):
     ]
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    first_name_kana = models.CharField(max_length=20)
+    last_name_kana = models.CharField(max_length=20)
     post = models.CharField(max_length=7, validators=[validate_postal_code])
     prefecture = models.CharField(max_length=2, choices=PREFECTURE_CHOICES, unique=True)
     city = models.CharField(max_length=50)

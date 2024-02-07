@@ -5,13 +5,12 @@ from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import AvailableProductsForm, UserProfileForm
+from .forms import AvailableProductsForm, UserProfileForm, UserAddressForm
 from .models import Class, CustomUser, Like, Product, Review, Transaction
 
 
 def index(request):
     return render(request, "index.html")
-
 
 @login_required
 def profile(request, username):
@@ -154,6 +153,20 @@ def delete_profile(request, username):
     }
 
     return render(request, "delete_profile.html", context)
+
+def edit_address(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        user_form = UserAddressForm(request.POST, request.FILES, instance=user)
+
+        if user_form.is_valid():
+            user_form.save()
+            return redirect(reverse("home_profile", args=[username]))
+
+    else:
+        user_form = UserAddressForm(instance=user)
+    return render(request, "edit_address.html", {"user_form":user_form})
 
 
 @login_required

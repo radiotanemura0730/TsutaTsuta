@@ -12,6 +12,7 @@
 
         <!--フォームが読み込まれたら、Payment Elementのインスタンスを作成して、それをコンテナーのDOMノードにマウントする-->
         <form id="payment-form">
+            {% csrf_token %}
             <div id="payment-element">
             <!-- クレジットカード入力フォームが挿入される部分 -->
             </div>
