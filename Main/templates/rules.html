@@ -1,0 +1,21 @@
+{% extends 'base_profile2.html' %}
+
+{% block css %}<link rel="stylesheet" href="../../static/rules.css">{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="rules_title">会員登録</div>
+</div>
+
+<div class="gap"></div>
+<div class="rules">利用規約</div>
+<div class="rules_container">
+    <div class="rules_box"></div>
+</div>
+
+
+
+{% endblock %}

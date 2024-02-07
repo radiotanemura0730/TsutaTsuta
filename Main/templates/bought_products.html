@@ -1,7 +1,7 @@
 {% extends 'base_profile.html' %}
 
 {% block css %}
-    <link rel="stylesheet" href="../../static/user_settings.css">
+    <link rel="stylesheet" href="../../static/bought_products.css">
 {% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
     <div class="reverse_button">
         <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
     </div>
-    <div class="settings_title">個人情報設定</div>
+    <div class="liked_product_title">購入した商品</div>
 </div>
 <div class="main_content">
     <div class="left">
@@ -24,7 +24,7 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">いいねした商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'liked_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a></div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">購入した商品</div>
@@ -64,13 +64,28 @@
         </div>
     </div>
     <div class="right">
-        <div class="right_title">アカウント</div>
-        <div class="right_content"><a href="{% url 'index' %}">プロフィール設定</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">住所設定</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">支払い設定</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">メールアドレス変更</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">パスワード変更</a></div>
-        <div class="account_delete"><a href="{% url 'index' %}">アカウント削除</a></div>
+        <div class="checkbox_container">
+            <form method="post">
+                <div class="form_container">
+                    <div class="checkbox">
+                        {% csrf_token %}
+                        {{ form }}
+                    </div>
+                    <div class="submit_box">
+                        <button type="submit" class="submit_button">表示を切り替える</button>
+                    </div>
+                </div>   
+            </form>   
+        </div>
+        <div class="liked_products_container">
+                {% for product in bought_products %}
+                    <div class="liked_product_box">
+                        <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                        <div class="product_name">{{ product.product_name }}</div>
+                        <div class="product_price">￥{{ product.price }}</div>             
+                    </div>
+                {% endfor %}
+        </div>
     </div>
-
+</div>
 {% endblock %}

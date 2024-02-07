@@ -1,13 +1,44 @@
 from decimal import Decimal
 
+import stripe
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import AvailableProductsForm, UserProfileForm, UserAddressForm
-from .models import Class, CustomUser, Like, Product, Review, Transaction
+from .forms import UserProfileForm, SignUpForm, AvailableProductsForm, OnTransactionProductsForm
+from .models import Class, CustomUser, Product, Review, Transaction, Like
+from django.views.generic import CreateView, TemplateView
+from django.urls import reverse_lazy
+from django.core.mail import send_mail
+import random
 
+class SignUpView(CreateView):
+    form_class = SignUpForm
+    template_name = 'Main/signup.html'
+
+    def form_valid(self, form):
+        super().form_valid(form)
+        random_number = random.randint(1000,9999)
+        random_number_str = str(random_number)
+        to_email = form.cleaned_data['email']
+        subject = "題名"
+        message = "認証番号の" + random_number_str + "を入力してください"
+        from_email = "system@example.com"
+        recipient_list = [to_email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+        print("send_email")
+        user_record = CustomUser.objects.get(email=to_email)
+        self.user_id = int(user_record.id)
+        return redirect("signup_auth", user_id=self.object.id)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('signup_auth', kwargs={'user_id' : self.object.id})
+    
+    
+class SignUpAuthView(TemplateView):
+    template_name = 'Main/signup_auth.html'
 
 def index(request):
     return render(request, "index.html")
@@ -248,7 +279,7 @@ def bought_products(request, username):
     user = get_object_or_404(CustomUser, username=username)
 
     if request.method == "POST":
-        form = AvailableProductsForm(request.POST)
+        form = OnTransactionProductsForm(request.POST)
         if form.is_valid():
             available_filter = {"buyer": user}
 
@@ -259,8 +290,10 @@ def bought_products(request, username):
             bought_products = Transaction.objects.filter(**available_filter)
 
     else:
-        form = AvailableProductsForm(request.POST)
-        bought_products = Like.objects.filter(user=user)
+        form = OnTransactionProductsForm(request.POST)
+        bought_products = Transaction.objects.filter(buyer=user)
+
+    bought_products = [transaction.product for transaction in bought_products]
 
     context = {
         "user": user,
@@ -270,75 +303,15 @@ def bought_products(request, username):
 
     return render(request, "bought_products.html", context)
 
-
-@login_required
-def liked_products(request, username):
-    user = get_object_or_404(CustomUser, username=username)
-
-    if request.method == "POST":
-        form = AvailableProductsForm(request.POST)
-        if form.is_valid():
-            available_filter = {"user": user}
-
-            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
-            if form.cleaned_data["show_available"]:
-                available_filter["product__is_available"] = True
-
-            user_likes = Like.objects.filter(**available_filter)
-
-    else:
-        form = AvailableProductsForm()
-        user_likes = Like.objects.filter(user=user)
-
-    liked_products = [like.product for like in user_likes]
-
-    context = {"user": user, "liked_products": liked_products, "form": form}
-
-    return render(request, "liked_products.html", context)
-
-
-@login_required
-def bought_products(request, username):
-    user = get_object_or_404(CustomUser, username=username)
-
-    if request.method == "POST":
-        form = AvailableProductsForm(request.POST)
-        if form.is_valid():
-            available_filter = {"buyer": user}
-
-            # チェックボックスにチェックが入っている場合はis_availableの条件を追加
-            if form.cleaned_data["show_available"]:
-                available_filter["product__is_available"] = True
-
-            bought_products = Transaction.objects.filter(**available_filter)
-
-    else:
-        form = AvailableProductsForm(request.POST)
-        bought_products = Like.objects.filter(user=user)
-
-    context = {
-        "user": user,
-        "bought_products": bought_products,
-        "form": form,
-    }
-
-    return render(request, "bought_products.html", context)
-
-from django.shortcuts import render
-from django.conf import settings
-from django.views import View
-from django.views.generic import TemplateView
-from .models import Product
-from django.shortcuts import redirect
-import stripe
-# Create your views here.
 
 def payment_information(request):
     template_name = "payment_information.html"
     return render(request, template_name)
 
+
 # # WEBHOOKのシークレットキー
 # endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
 
 def create_card(request):
     user = request.user
@@ -346,21 +319,28 @@ def create_card(request):
     stripe.api_key = settings.STRIPE_API_KEY
 
     # Customerオブジェクトを作成（引数は任意）
-    stripe_customer = stripe.Customer.create(
-        name=user.username
-    )
+    stripe_customer = stripe.Customer.create(name=user.username)
     # SetupIntentオブジェクト生成
     setup_intent = stripe.SetupIntent.create(
-        customer=stripe_customer.id,# 生成したCustomerのIDを指定
-        payment_method_types=["card"],# 支払い方法→今回はクレジットカード（"card"）
-        )
-        # 作成したSetupIntentからclient_secretを取得する→テンプレートへ渡す
+        customer=stripe_customer.id,  # 生成したCustomerのIDを指定
+        payment_method_types=["card"],  # 支払い方法→今回はクレジットカード（"card"）
+    )
+    # 作成したSetupIntentからclient_secretを取得する→テンプレートへ渡す
     context = {
         "client_secret": setup_intent.client_secret,
     }
-    template_name = 'create_card.html'
-    return render(request, template_name, context)
+    return render(request, "create_card.html", context)
+
+
 
 def thanks(request):
-    template_name = 'thanks.html'
+    template_name = "thanks.html"
     return render(request, template_name)
+
+
+def privacy_policy(request):
+    return render(request, "privacy_policy.html")
+
+
+def rules(request):
+    return render(request, "rules.html")

@@ -1,0 +1,39 @@
+.content{
+    width: 717px;
+    margin-left: auto;
+    margin-right: auto;
+}
+p > label {
+    font-size: 20px;
+}
+p > input {
+    display: block;
+    width:  717px;
+    height: 52px;
+    font-size: large;
+    border-radius: 8px;
+    border: solid 1px black;
+}
+.form-consent{
+    font-size: 12px;
+    line-height: 16px;
+}
+.form-checkbox-wrap{
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 5px;
+}
+.form-checkbox-wrap__checkbox{
+    width: 8px;
+    height: 8px;
+}
+.form-btn{
+    width: 717px;
+    height: 40px;
+    background-color: #4ABDAC;
+    font-size: 14px;
+    color: white;
+    border: solid 1px black;
+    border-radius: 8px;
+    margin: 50px auto auto 0;
+}
