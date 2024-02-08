@@ -1,8 +1,29 @@
 {% extends 'Main/base.html' %}
 {% load static %}
 
-{% block extra_style %}<script src="https://js.stripe.com/v3/"></script>{% endblock %}
-{% block header-title %}支払い設定{% endblock %}
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'create_card.css' %}">
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+{% block header %}
+<header class="header">
+    <div class="header-container">
+        <div class="header-main-container">
+            <span class="header-main-container__title">tsutastuta</span>
+        </div>
+        <div class="header-sub-container">
+            <div class="header-sub-container__back">
+            <a href="{% url 'payment_information' username=user.username %}"><div class="header-sub-container__back__block">&lt;</div></a>
+            </div>
+            <span class="header-sub-container__title">
+                {% block header-title %}支払い設定{% endblock %}
+            </span>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
 
 {% block content %}
     <!-- inputタグでclient_secretを渡す→JavaScriptで値（value）を取得する -->
@@ -17,7 +38,7 @@
         <div id="error-message">
         <!-- エラーが起こった場合のメッセージ -->
         </div>
-        <button id="submit">更新する</button>
+        <button class="submit_button_icon" id="submit">更新する</button>
     </form>
     
     <script src="{% static 'js/stripe.js' %}"></script>
