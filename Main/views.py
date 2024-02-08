@@ -1,28 +1,45 @@
+import random
 from decimal import Decimal
 
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.db.models import OuterRef, Q, Subquery, Sum
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-
-from .forms import UserProfileForm, SignUpForm, AvailableProductsForm, OnTransactionProductsForm
-from .models import Class, CustomUser, Product, Review, Transaction, Like
-from django.views.generic import CreateView, TemplateView
-from django.urls import reverse_lazy
 from django.core.mail import send_mail
-import random
+from django.db.models import OuterRef, Q, Subquery, Sum
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.views.generic import CreateView, TemplateView
+
+from .forms import (
+    AvailableProductsForm,
+    CommentForm,
+    OnTransactionProductsForm,
+    SignUpForm,
+    UserProfileForm,
+)
+from .models import (
+    Address,
+    Class,
+    Comment,
+    CustomUser,
+    Like,
+    Product,
+    Review,
+    Transaction,
+)
+
 
 class SignUpView(CreateView):
     form_class = SignUpForm
-    template_name = 'Main/signup.html'
+    template_name = "Main/signup.html"
 
     def form_valid(self, form):
         super().form_valid(form)
-        random_number = random.randint(1000,9999)
+        random_number = random.randint(1000, 9999)
         random_number_str = str(random_number)
-        to_email = form.cleaned_data['email']
+        to_email = form.cleaned_data["email"]
         subject = "題名"
         message = "認証番号の" + random_number_str + "を入力してください"
         from_email = "system@example.com"
@@ -32,13 +49,14 @@ class SignUpView(CreateView):
         user_record = CustomUser.objects.get(email=to_email)
         self.user_id = int(user_record.id)
         return redirect("signup_auth", user_id=self.object.id)
-    
+
     def get_success_url(self) -> str:
-        return reverse_lazy('signup_auth', kwargs={'user_id' : self.object.id})
-    
-    
+        return reverse_lazy("signup_auth", kwargs={"user_id": self.object.id})
+
+
 class SignUpAuthView(TemplateView):
-    template_name = 'Main/signup_auth.html'
+    template_name = "Main/signup_auth.html"
+
 
 def index(request):
     return render(request, "index.html")
@@ -214,20 +232,63 @@ def home_view(request):
         "products_list": products_list,
         "studies_list": studies_list,
     }
-    print(studies_list)
     return render(request, "home.html", context)
 
 
 @login_required
 def product_description(request, product_id):
     user = request.user
+    form = CommentForm()
     product = Product.objects.get(id=product_id)
-    review = Review.objects.get(user=product.seller)
+    if Review.objects.filter(user=product.seller).exists():
+        review = Review.objects.get(user=product.seller)
+    else:
+        review = None
+    if Transaction.objects.filter(product=product).exists():
+        transaction = Transaction.objects.filter(product=product)
+    else:
+        transaction = None
+    time = timezone.now()
+    comment = Comment.objects.filter(product=product).order_by("-created_date")
+    comment_length = len(comment)
+    address = Address.objects.get(user=product.seller)
+    transaction_exists = Transaction.objects.filter(
+        product_id=OuterRef("pk"), buyer__isnull=False
+    ).values("product_id")[:1]
+    products_list = (
+        Product.objects.exclude(
+            Q(seller=user) | Q(pk__in=Subquery(transaction_exists)) | Q(pk=product.pk)
+        )
+        .filter(gakka_category=product.gakka_category)
+        .filter(genre=product.genre)
+    )
+    if Like.objects.filter(user=user, product=product).exists():
+        is_user_like = True
+    else:
+        is_user_like = False
     context = {
         "user": user,
         "product": product,
         "review": review,
+        "transaction": transaction,
+        "time": time,
+        "comment_list": comment,
+        "comment_length": comment_length,
+        "address": address,
+        "others": products_list,
+        "form": form,
+        "is_user_like": is_user_like,
     }
+
+    if request.POST:
+        new_comment = Comment(user=user, product=product)
+        form = CommentForm(request.POST, instance=new_comment)
+        if form.is_valid():
+            form.save()
+            return redirect("product_description", product_id)
+        else:
+            print(form.errors)
+
     return render(request, "product_description.html", context)
 
 
@@ -331,3 +392,20 @@ def privacy_policy(request):
 
 def rules(request):
     return render(request, "rules.html")
+
+
+def like_product(request):
+    product_pk = request.POST.get("product_pk")
+    context = {
+        "user": request.user.id,
+    }
+    product = get_object_or_404(Product, pk=product_pk)
+    like = Like.objects.filter(product=product, user=request.user)
+    if like.exists():
+        like.delete()
+        context["method"] = "delete"
+    else:
+        like.create(product=product, user=request.user)
+        context["method"] = "create"
+
+    return JsonResponse(context)

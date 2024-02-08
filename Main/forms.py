@@ -1,16 +1,18 @@
 from django import forms
-
-from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm
+
+from .models import Comment, CustomUser
+
 
 class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ("email", "password1", "password2")
-    
+
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
+        self.fields["email"].required = True
+
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -50,3 +52,9 @@ class OnTransactionProductsForm(forms.Form):
         initial=False,
         widget=forms.CheckboxInput(),
     )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["text"]
