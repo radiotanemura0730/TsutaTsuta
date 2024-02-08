@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import CustomUser
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -15,6 +15,9 @@ class SignUpForm(UserCreationForm):
 
 class SignUpAuthForm(forms.Form):
     auth_number = forms.IntegerField(label='',widget=forms.NumberInput(attrs={'type': 'number'}))
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField()
 
 
 class UserProfileForm(forms.ModelForm):

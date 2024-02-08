@@ -1,0 +1,31 @@
+{% extends "Main/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'Main/css/login.css' %}">
+{% endblock %}
+{% block header-title%}ログイン{% endblock %}
+
+{% block content %}
+<div class="content">
+    <form class="form" method="post">
+        {% csrf_token %}
+        <div class="form-part">
+            <div class="form-part__text">
+                <span class="form-part__user_id">メールアドレス</span>
+                <span class="form-part__message">＊aaa@のメールアドレスのみ利用できます</span>
+            </div>
+            <p>{{ form.username }}</p>
+        </div>
+        <div class="form-part">
+            <div class="form-part__text">
+                <span class="form-part__user_id">パスワード</span>
+            </div>
+            <p>{{ form.password }}</p>
+        </div>
+       
+        <input class="form-btn" type="submit" value="ログイン">
+        <div>{{error_message}}</div>
+    </form>
+</div>
+{% endblock %}
