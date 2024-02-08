@@ -33,6 +33,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         _("username"),
         max_length=150,
+        unique=True, # usernameフィールドを一意にするため 
         help_text=_(
             "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
@@ -208,10 +209,10 @@ class Address(models.Model):
     ]
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    first_name_kana = models.CharField(max_length=20)
-    last_name_kana = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=20, default='')
+    last_name = models.CharField(max_length=20, default='')
+    first_name_kana = models.CharField(max_length=20, default='')
+    last_name_kana = models.CharField(max_length=20, default='')
     post = models.CharField(max_length=7, validators=[validate_postal_code])
     prefecture = models.CharField(max_length=2, choices=PREFECTURE_CHOICES, unique=True)
     city = models.CharField(max_length=50)

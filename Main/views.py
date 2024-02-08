@@ -7,7 +7,7 @@ from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import UserProfileForm, SignUpForm, AvailableProductsForm, OnTransactionProductsForm
+from .forms import UserProfileForm, SignUpForm, AvailableProductsForm, OnTransactionProductsForm, UserAddressForm
 from .models import Class, CustomUser, Product, Review, Transaction, Like
 from django.views.generic import CreateView, TemplateView
 from django.urls import reverse_lazy
@@ -304,17 +304,21 @@ def bought_products(request, username):
     return render(request, "bought_products.html", context)
 
 
-def payment_information(request):
+def payment_information(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    context = {
+        "user": user
+    }
     template_name = "payment_information.html"
-    return render(request, template_name)
+    return render(request, template_name, context)
 
 
 # # WEBHOOKのシークレットキー
 # endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
 
-def create_card(request):
-    user = request.user
+def create_card(request, username):
+    user = get_object_or_404(CustomUser, username=username)
     # セッションを開始するため、STRIPEのシークレットキーをセットする
     stripe.api_key = settings.STRIPE_API_KEY
 
@@ -334,8 +338,7 @@ def create_card(request):
 
 
 def thanks(request):
-    template_name = "thanks.html"
-    return render(request, template_name)
+    return render(request, "thanks.html")
 
 
 def privacy_policy(request):

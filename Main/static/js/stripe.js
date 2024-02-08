@@ -35,7 +35,5 @@ form.addEventListener('submit', async (event) => {
     if (error) {
         const messageContainer = document.querySelector('#error-message');
         messageContainer.textContent = error.message;
-    } else {
-        // none
-    }
+    } 
 });

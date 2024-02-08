@@ -24,8 +24,9 @@ urlpatterns = [
     path(
         "bought_products/<str:username>", views.bought_products, name="bought_products"
     ),
-    path("payment_information/", views.payment_information, name="payment_information"),
-    path("create_card/", views.create_card, name="create-card-information"),
+    path("payment_information/<str:username>", views.payment_information, name="payment_information"),
+    path("create_card/<str:username>", views.create_card, name="create_card"),
+    path("thanks/", views.thanks, name="thanks"),
     path("privacy_policy/", views.privacy_policy, name="privacy_policy"),
     path("rules/", views.rules, name="rules"),
 ]

@@ -30,7 +30,24 @@
 }
 
 .option {
+    display: flow-root; /* 青い本p161参照 */
     text-align: left;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.checkbox-round {
+    float: left;
+    height: 2em;
+    margin-right: 20px;
+}
+
+.logo_visa {
+    float: left;
+    height: 2em;
+    width: 40px;
+    border: 1px solid #000;
+    margin-right: 20px;
 }
 
 .submit_button_icon {
@@ -47,4 +64,12 @@
 
 button {
     align-items: center;
+}
+
+.displayCredit {
+    color: #3763FF;
+}
+
+.displayText {
+    color: red;
 }
