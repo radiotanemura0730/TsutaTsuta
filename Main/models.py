@@ -41,8 +41,8 @@ class CustomUser(AbstractUser):
         },
     )
     email = models.EmailField(_("email address"), unique=True, blank=True)
-    #認証
-    # auth_number = models.IntegerField()
+    # 認証
+    auth_number = models.IntegerField(null=True, blank=True)
 
     Soujin = "総合人間学部"
     Literature = "文学部"
