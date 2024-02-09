@@ -9,8 +9,8 @@ from django.urls import reverse
 
 from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, CustomAuthenticationForm
 from .models import Class, CustomUser, Product, Review, Transaction, Like
-from django.views.generic import CreateView, TemplateView, UpdateView, View
-from django.contrib.auth.views import LoginView
+from django.views.generic import CreateView, TemplateView, UpdateView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login
@@ -83,6 +83,21 @@ class SignUpDoneView(UpdateView):
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'Main/login.html'
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'Main/password_reset.html'
+    success_url = reverse_lazy('password_reset_done')
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'Main/password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'Main/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'Main/password_reset_complete.html'
 
 
 def index(request):
