@@ -1,0 +1,88 @@
+{% extends 'base_profile.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="../../static/exhibited_products.css">
+{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="exhibited_products_title">出品した商品</div>
+</div>
+
+<div class="main_content">
+    <div class="left">
+        <div class="navigation">
+            <div class="management">
+                <div class="navigation_title">
+                    <div class="text">商品管理</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">出品した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">いいねした商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">購入した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>             
+                <div class="navigation_content">
+                    <div class="text">下書き</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+            <div class="settings">
+                <div class="navigation_title">
+                    <div class="text">設定・ポイント</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">個人情報設定</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">ポイント履歴</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+            <div class="policy">
+                <div class="navigation_title">
+                    <div class="text">規約・ポリシー</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">規約等</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">プライバシーポリシー</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="tab_container">
+            <div class="tab" onclick="showTab('tab1')">Tab 1</div>
+            <div class="tab" onclick="showTab('tab2')">Tab 2</div>
+            <div class="tab" onclick="showTab('tab3')">Tab 3</div>
+        </div>
+        <div class="product_container">
+            <div id="tab1" class="tab_content">
+                ここに処理を書いていく
+            </div>
+              
+            <div id="tab2" class="tab_content">
+                ここに処理を書いていく
+            </div>
+              
+            <div id="tab3" class="tab_content">
+                ここに処理を書いていく
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

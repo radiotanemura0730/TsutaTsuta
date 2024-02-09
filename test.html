@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .tab-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      cursor: pointer;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .tab-content {
+      display: none;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 0 0 5px 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="tab-container">
+  <div class="tab" onclick="showTab('tab1')">Tab 1</div>
+  <div class="tab" onclick="showTab('tab2')">Tab 2</div>
+  <div class="tab" onclick="showTab('tab3')">Tab 3</div>
+</div>
+
+<div id="tab1" class="tab-content">
+  <p>Content for Tab 1 goes here.</p>
+</div>
+
+<div id="tab2" class="tab-content">
+  <p>Content for Tab 2 goes here.</p>
+</div>
+
+<div id="tab3" class="tab-content">
+  <p>Content for Tab 3 goes here.</p>
+</div>
+
+<script>
+  function showTab(tabId) {
+    // Hide all tab contents
+    var tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(function(tabContent) {
+      tabContent.style.display = 'none';
+    });
+
+    // Show the selected tab content
+    var selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+      selectedTab.style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>
