@@ -7,7 +7,7 @@ from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm
+from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, UserAddressForm
 from .models import Class, CustomUser, Product, Review, Transaction, Like
 from django.views.generic import CreateView, TemplateView, UpdateView, View
 from django.urls import reverse_lazy
@@ -84,7 +84,6 @@ class SignUpDoneView(UpdateView):
 
 def index(request):
     return render(request, "index.html")
-
 
 @login_required
 def profile(request, username):
@@ -228,6 +227,20 @@ def delete_profile(request, username):
 
     return render(request, "delete_profile.html", context)
 
+def edit_address(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        user_form = UserAddressForm(request.POST, request.FILES, instance=user)
+
+        if user_form.is_valid():
+            user_form.save()
+            return redirect(reverse("home_profile", args=[username]))
+
+    else:
+        user_form = UserAddressForm(instance=user)
+    return render(request, "edit_address.html", {"user_form":user_form})
+
 
 @login_required
 def home_view(request):
@@ -333,17 +346,21 @@ def bought_products(request, username):
     return render(request, "bought_products.html", context)
 
 
-def payment_information(request):
+def payment_information(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    context = {
+        "user": user
+    }
     template_name = "payment_information.html"
-    return render(request, template_name)
+    return render(request, template_name, context)
 
 
 # # WEBHOOKのシークレットキー
 # endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
 
-def create_card(request):
-    user = request.user
+def create_card(request, username):
+    user = get_object_or_404(CustomUser, username=username)
     # セッションを開始するため、STRIPEのシークレットキーをセットする
     stripe.api_key = settings.STRIPE_API_KEY
 
@@ -358,13 +375,12 @@ def create_card(request):
     context = {
         "client_secret": setup_intent.client_secret,
     }
-    template_name = "create_card.html"
-    return render(request, template_name, context)
+    return render(request, "create_card.html", context)
+
 
 
 def thanks(request):
-    template_name = "thanks.html"
-    return render(request, template_name)
+    return render(request, "thanks.html")
 
 
 def privacy_policy(request):

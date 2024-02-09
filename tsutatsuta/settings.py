@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     #allauth
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+    "sslserver",  # stripeのテストでhttpsにする必要があるため
 ]
 
 MIDDLEWARE = [

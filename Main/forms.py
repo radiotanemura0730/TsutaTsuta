@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import CustomUser
+from .models import CustomUser, Address
 from django.contrib.auth.forms import UserCreationForm
 
 class SignUpForm(UserCreationForm):
@@ -35,6 +35,28 @@ class UserDeleteForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = "__all__"
+
+class UserAddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ["first_name", "last_name", "first_name_kana", "last_name_kana", "post", "prefecture", "city", "house_number", "building"]
+        labels = {
+            "first_name": "名",
+            "last_name": "姓",
+            "first_name_kana": "名（カナ）",
+            "last_name_kana": "姓（カナ）",
+            "post": "郵便番号",
+            "prefecture": "都道府県",
+            "city": "市町村",
+            "house_number": "番地",
+            "building": "建物",
+        }
+        widgets = {
+                "first_name": forms.TextInput(attrs={'placeholder': 'つた村'}),
+                "last_name": forms.TextInput(attrs={'placeholder': 'つた子'}),
+                "first_name_kana": forms.TextInput(attrs={'placeholder': 'ツタムラ'}),
+                "last_name_kana": forms.TextInput(attrs={'placeholder': 'ツタコ'}),
+        }
 
 
 class AvailableProductsForm(forms.Form):

@@ -1,27 +1,80 @@
 {% extends 'base_profile2.html' %}
 
-{% block title %}支払い情報{% endblock %}
+{% block css %}<link rel="stylesheet" href="../../static/payment_information.css">{% endblock %}
 
-
-{% block css %}
-    <link rel="stylesheet" href="../../static/profile.css">
-    <!-- <link rel="stylesheet" href="../static/payment_information.css"> -->
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'user_settings' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="settings_title">支払い設定</div>
+</div>
+<div class="payment_content">
+    <div class="option">
+        <input type="checkbox" class="checkbox-round credit_card" id="checkboxCredit" value="credit">
+        <label for="credit">
+            <img src="../static/media/Visa_Brandmark_Blue_RGB_2021.svg" alt="VISAのロゴ" class="logo_visa">
+            クレジットカード決済（手数料￥0）
+            <br>
+            ****************
+            <p class="displayCredit" style="display: none;">
+                <a href="{% url 'create_card' username=user.username %}">+新しいクレジットカードを登録する</a></p>
+        </label>
+    </div>
+    <div class="option">
+        <input type="checkbox" class="checkbox-round after2nd" id="checkboxSoftbank" value="softbank">
+        <label for="softbank">ソフトバンクまとめて支払い<br>
+            手数料 ￥100-880
+        <p class="displayText" style="display: none;">*現在利用できません。</p>
+        </label>
+    </div>
+    <div class="option">
+        <input type="checkbox" class="checkbox-round after2nd" id="checkboxConvinient_or_ATM" value="convenient_or_ATM">
+        <label for="convenient_or_ATM">コンビニ/ATM支払い<br>
+            手数料 ￥100-880
+        <p class="displayText" style="display: none;">*現在利用できません。</p>
+        </label><br>
+    </div>
+    <div class="option">
+        <input type="checkbox" class="checkbox-round after2nd" id="checkboxPaypay" value="paypay">
+        <label for="paypay">PAYPAY支払い<br>
+            手数料 ￥100-880
+        <p class="displayText" style="display: none;">*現在利用できません。</p>
+        </label>     
+    </div>
+    <button type="submit" class="submit_button_icon">更新する</button>
+</div>
 
 {% endblock %}
 
-{% block header%}支払い設定{% endblock %}
+{% block script %}
 
-{% block content %}
-    <input type="radio" id="credit" value="credit" checked>
-    <label for="credit">クレジットカード決済</label><br>
-    <input type="radio" id="softbank" value="softbank" checked>
-    <label for="softbank">ソフトバンクまとめて支払い<br>
-        手数料 ￥100-880
-    </label><br>
-    <input type="radio" id="convenient_or_ATM" value="convenient_or_ATM" checked>
-    <label for="convenient_or_ATM">コンビニ/ATM支払い<br>
-        手数料 ￥100-880</label><br>
-    <input type="radio" id="paypay" value="paypay" checked>
-    <label for="paypay">PAYPAY支払い<br>
-        手数料 ￥100-880</label>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.querySelector('.credit_card');
+    const displayCredit = document.querySelector('.displayCredit');
+    const checkboxes = document.querySelectorAll('.after2nd');
+    const displayTexts = document.querySelectorAll('.displayText');
+
+    checkbox.addEventListener('click', function() {
+        if (this.checked) {
+                displayCredit.style.display = 'block'; // テキストを表示
+            } else {
+                displayCredit.style.display = 'none'; // テキストを非表示
+            }
+    }); /* クレジットカード追加用 */
+
+    checkboxes.forEach((checkbox,index) => {
+        checkbox.addEventListener('click', function() {
+            if (this.checked) {
+                displayTexts[index].style.display = 'block'; // テキストを表示
+            } else {
+                displayTexts[index].style.display = 'none'; // テキストを非表示
+            }
+        });
+    }); /* クレジットカード以外は利用できない */
+});
+
+
+</script>
 {% endblock %}
