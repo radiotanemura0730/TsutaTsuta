@@ -98,7 +98,7 @@ button {
     display: inline;
 }
 
-.fa-solid {
+#info-like_button > .fa-solid {
     color: #fc4a1a;
 }
 
