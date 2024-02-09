@@ -7,11 +7,12 @@ from django.db.models import OuterRef, Q, Subquery, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import UserProfileForm, SignUpForm, AvailableProductsForm, OnTransactionProductsForm, UserAddressForm
+from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, UserAddressForm
 from .models import Class, CustomUser, Product, Review, Transaction, Like
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView, View
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login
 import random
 
 class SignUpView(CreateView):
@@ -28,17 +29,58 @@ class SignUpView(CreateView):
         from_email = "system@example.com"
         recipient_list = [to_email]
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-        print("send_email")
         user_record = CustomUser.objects.get(email=to_email)
-        self.user_id = int(user_record.id)
-        return redirect("signup_auth", user_id=self.object.id)
+        user_record.auth_number = random_number
+        user_record.save()
+        self.pk = int(user_record.id)
+        return redirect("signup_auth", pk=self.object.id)
     
     def get_success_url(self) -> str:
-        return reverse_lazy('signup_auth', kwargs={'user_id' : self.object.id})
+        return reverse_lazy('signup_auth', kwargs={'pk' : self.object.id})
     
     
 class SignUpAuthView(TemplateView):
     template_name = 'Main/signup_auth.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = kwargs['pk']
+        user = CustomUser.objects.get(id=pk)
+        context['user_email'] = user.email
+        context['pk'] = pk
+        context['form'] = SignUpAuthForm()
+        return context
+
+    def post(self, request, pk):
+        form = SignUpAuthForm(request.POST)
+        print(form)
+        if form.is_valid():
+            entered_auth_number = form.cleaned_data['auth_number']
+            user = CustomUser.objects.get(id=pk)
+            saved_auth_number = user.auth_number
+            if entered_auth_number == saved_auth_number:
+                return redirect('signup_done', pk=pk)
+            else:
+                return render(request, self.template_name, {'pk': pk, 'form': form, 'error_message': '認証番号が正しくありません'})
+        else:
+            return render(request, self.template_name, {'pk': pk, 'form': form, 'error_message': '入力が正しくありません'})
+
+
+class SignUpDoneView(UpdateView):
+    template_name = 'Main/signup_done.html'
+    model = CustomUser
+    fields = ('user_id',)
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data['user_id'])
+        user = CustomUser.objects.get(pk=self.object.pk)
+        login(self.request, user)
+        return response
+    
+
+
 
 def index(request):
     return render(request, "index.html")

@@ -9,8 +9,16 @@
 {% block content %}
 <div class="content">
     <div class="content-main">メールの認証</div>
-    <div class="content-sub">mailに送信された４桁のコードを入力してください。</div>
-    <div class="content-sub">受信していない場合は迷惑メールフォルダーを確認してください</div>
-    {{id}}
+    <div class="content-sub">
+        <div>{{user_email}}に送信された４桁のコードを入力してください。</div>
+        <div>受信していない場合は迷惑メールフォルダーを確認してください</div>
+    </div>
+    <div class="email_repost">コードの再送信</div>
+    <form class="form" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="form-btn" type="submit" value="check">
+        <div>{{error_message}}</div>
+    </form>
 </div>
 {% endblock %}

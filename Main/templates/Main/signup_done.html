@@ -1,0 +1,26 @@
+{% extends "Main/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'Main/css/signup_done.css' %}">
+{% endblock %}
+{% block header-title%}会員登録{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="content-main">アカウント作成</div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-part">
+            <div class="form-part__text">
+                <span class="form-part__user_id">ユーザーID</span>
+                <span class="form-part__message">＊後ほど変更できます</span>
+            </div>
+            <p>{{ form.user_id }}</p>
+        </div>
+        <input class="form-btn" type="submit" value="始める">
+    </form>
+
+</div>
+{% endblock %}

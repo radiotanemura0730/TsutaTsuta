@@ -12,6 +12,11 @@ class SignUpForm(UserCreationForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
 
+
+class SignUpAuthForm(forms.Form):
+    auth_number = forms.IntegerField(label='',widget=forms.NumberInput(attrs={'type': 'number'}))
+
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
