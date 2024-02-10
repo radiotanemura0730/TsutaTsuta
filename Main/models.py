@@ -302,7 +302,7 @@ class Product(models.Model):
         (Local_environment, "地域環境工学科"),
         (Food_environment, "食料・環境経済学科"),
         (Forestry, "森林科学科"),
-        (Food_biology, "食品生物化学科"),
+        (Food_biology, "食品生物科学科"),
     ]
 
     CONDITION_CHOICES = [
