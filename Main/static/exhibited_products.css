@@ -29,7 +29,7 @@
     font-size: 24px;
 }
 
-.reverse_button a{
+.reverse_button a {
     font-size: 24px;
 }
 
@@ -39,15 +39,15 @@
     display: flex;
 }
 
-.container  .main_content .left {
+.container .main_content .left {
     width: 411px;
     height: 440px;
 }
 
-.container  .main_content .right {
+.container .main_content .right {
     width: 1003px;
     height: 927px;
-    border: 1px solid #000;
+    margin-left: 20px;
 }
 
 /* ここまで全体のプロフィール画面の大きな構成 */
@@ -92,8 +92,10 @@
 }
 
 a {
-    text-decoration: none; /* 下線をなくす */
-    color: inherit; /* 親要素からの継承されたカラーを使用 */
+    text-decoration: none;
+    /* 下線をなくす */
+    color: inherit;
+    /* 親要素からの継承されたカラーを使用 */
 }
 
 /* ここまで共通（画面左部） */
@@ -101,12 +103,86 @@ a {
 .tab_container {
     height: 49px;
     width: 420px;
-    border: 1px solid red;
     display: flex;
 }
 
 .tab {
     height: 100%;
     width: 140px;
-    border: 1px solid blue;
+    font-size: 24px;
+    line-height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab.active {
+    border-bottom: 10px solid yellow;
+}
+
+/* ここから各タブの表示要素の処理  まずは出品中の商品から*/
+
+.first_product {
+    border-top: 1px solid black;
+}
+
+.exhibited_product_box,
+.trading_product_box,
+.sold_product_box {
+    height: 160px;
+    width: 100%;
+    display: flex;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+.product_image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 160px;
+    width: 160px;
+}
+
+.product_image img {
+    height: 120px;
+    width: 120px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.product_name {
+    position: absolute;
+    top: 34px;
+    left: 172px;
+    height: 52px;
+    width: 769px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.product_price {
+    position: absolute;
+    top: 86px;
+    left: 172px;
+    height: 24px;
+    width: 57px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.liked_people {
+    position: absolute;
+    top: 115px;
+    left: 174px;
+    height: 25px;
+}
+
+.commented {
+    position: absolute;
+    top: 115px;
+    left: 213px;
+    height: 25px;
 }
