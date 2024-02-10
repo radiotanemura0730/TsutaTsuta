@@ -39,6 +39,7 @@ class CustomUser(AbstractUser):
         error_messages={
             "unique": _("A user with that username already exists."),
         },
+        unique=True,
     )
     email = models.EmailField(_("email address"), unique=True, blank=True)
     # 認証

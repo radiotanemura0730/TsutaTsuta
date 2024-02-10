@@ -418,6 +418,32 @@ def bought_products(request, username):
     return render(request, "bought_products.html", context)
 
 
+@login_required
+def exhibited_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    exhibited_products = Product.objects.filter(seller=user)
+
+    trading_products = Transaction.objects.filter(seller=user)
+
+    sold_products = trading_products.filter(is_received=True)
+
+    trading_products = trading_products.difference(sold_products)
+
+    trading_products = [transaction.product for transaction in trading_products]
+
+    sold_products = [transaction.product for transaction in sold_products]
+
+    context = {
+        "user": user,
+        "exhibited_products": exhibited_products,
+        "trading_products": trading_products,
+        "sold_products": sold_products,
+    }
+
+    return render(request, "exhibited_products.html", context)
+
+
 def payment_information(request, username):
     user = get_object_or_404(CustomUser, username=username)
     context = {"user": user}
