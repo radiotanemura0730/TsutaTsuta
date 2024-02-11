@@ -65,8 +65,8 @@
     </div>
     <div class="right">
         <div class="right_title">アカウント</div>
-        <div class="right_content"><a href="{% url 'index' %}">プロフィール設定</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">住所設定</a></div>
+        <div class="right_content"><a href="{% url 'edit_profile' username=user.username %}">プロフィール設定</a></div>
+        <div class="right_content"><a href="{% url 'edit_address' username=user.username %}">住所設定</a></div>
         <div class="right_content"><a href="{% url 'index' %}">支払い設定</a></div>
         <div class="right_content"><a href="{% url 'index' %}">メールアドレス変更</a></div>
         <div class="right_content"><a href="{% url 'index' %}">パスワード変更</a></div>

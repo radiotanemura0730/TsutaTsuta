@@ -134,7 +134,7 @@ form {
 }
 
 .product_image {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     height: 160px;
@@ -148,6 +148,31 @@ form {
     margin-left: 20px;
 }
 
+/* この部分は売り切れ済みの商品にのみ追加 */
+.sold_product_image {
+    position: relative;
+    height: 160px;
+    width: 160px;
+}
+
+.sold_product_image img {
+    height: 120px;
+    width: 120px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.sold_product_image::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border-width: 0 0 30px 30px; /* 三角形の形状を指定 */
+    border-style: solid;
+    border-color: transparent red; /* 透明な左上の辺と赤色の塗りつぶし */
+}  
+
+/* ここまで条件分岐の処理 */
 .right_product_box {
     position: absolute;
     top: 0;

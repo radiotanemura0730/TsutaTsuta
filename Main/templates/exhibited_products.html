@@ -87,14 +87,25 @@
         <div class="product_container">
             <div id="tab1" class="tab_content">
                 {% for product in exhibited_products %}
-                <a href="{% url 'product_description' product.id %}"
-                    class="exhibited_product_box {% if forloop.first %}first_product{% endif %}">
-                    <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
-                    <div class="product_name">{{ product.product_name }}</div>
-                    <div class="product_price">￥{{ product.price }}</div>
-                    <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
-                    <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
-                </a>
+                    {% if product.is_available == True %}
+                        <a href="{% url 'product_description' product.id %}"
+                            class="exhibited_product_box {% if forloop.first %}first_product{% endif %}">
+                            <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                            <div class="product_name">{{ product.product_name }}</div>
+                            <div class="product_price">￥{{ product.price }}</div>
+                            <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                            <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
+                        </a>
+                    {% else %}                    
+                        <a href="{% url 'product_description' product.id %}"
+                            class="exhibited_product_box {% if forloop.first %}first_product{% endif %}">
+                            <div class="sold_product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                            <div class="product_name">{{ product.product_name }}</div>
+                            <div class="product_price">￥{{ product.price }}</div>
+                            <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                            <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
+                        </a>
+                    {% endif %}    
                 {% endfor %}
             </div>
 
@@ -115,7 +126,7 @@
                 {% for product in sold_products %}
                 <a href="{% url 'product_description' product.id %}" 
                     class="sold_product_box {% if forloop.first %}first_product{% endif %}">
-                    <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                    <div class="sold_product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
                     <div class="product_name">{{ product.product_name }}</div>
                     <div class="product_price">￥{{ product.price }}</div>
                     <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>

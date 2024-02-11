@@ -23,10 +23,10 @@ urlpatterns = [
     path("delete_confirm/", views.delete_confirm, name="delete_confirm"),
     path("liked_products/<str:username>/", views.liked_products, name="liked_products"),
     path(
-        "bought_products/<str:username>", views.bought_products, name="bought_products"
+        "bought_products/<str:username>/", views.bought_products, name="bought_products"
     ),
     path(
-        "exhibited_products/<str:username>",
+        "exhibited_products/<str:username>/",
         views.exhibited_products,
         name="exhibited_products",
     ),
