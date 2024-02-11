@@ -14,6 +14,7 @@ from django.contrib.auth.views import LoginView, PasswordResetView, PasswordRese
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login
+from django.core.exceptions import ValidationError
 import random
 
 class SignUpView(CreateView):
@@ -54,7 +55,6 @@ class SignUpAuthView(TemplateView):
 
     def post(self, request, pk):
         form = SignUpAuthForm(request.POST)
-        print(form)
         if form.is_valid():
             entered_auth_number = form.cleaned_data['auth_number']
             user = CustomUser.objects.get(id=pk)
@@ -73,7 +73,10 @@ class SignUpDoneView(UpdateView):
     fields = ('user_id',)
     success_url = reverse_lazy('home')
 
-    def form_valid(self, form):
+    def form_valid(self,form):
+        user_id = form.cleaned_data['user_id']
+        if CustomUser.objects.filter(user_id=user_id).exists():
+            return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message': 'このユーザーIDはすでに使用されています。'})
         response = super().form_valid(form)
         CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data['user_id'])
         user = CustomUser.objects.get(pk=self.object.pk)

@@ -16,7 +16,9 @@
 
 .email_repost{
     margin-top: 15px;
-    margin-left: 0;
+    text-align: left;
+    margin-left: 110px;
+    font-size: 12px;
 }
 
 p > input{
