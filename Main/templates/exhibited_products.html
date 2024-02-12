@@ -1,0 +1,177 @@
+{% extends 'base_profile.html' %}
+
+{% block css %}
+<link rel="stylesheet" href="../../static/exhibited_products.css">
+{% endblock %}
+
+{% block content %}
+<div class="navigation_bar">
+    <div class="reverse_button">
+        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
+    </div>
+    <div class="exhibited_products_title">出品した商品</div>
+</div>
+
+<div class="main_content">
+    <div class="left">
+        <div class="navigation">
+            <div class="management">
+                <div class="navigation_title">
+                    <div class="text">商品管理</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">出品した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">いいねした商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">購入した商品</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">下書き</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="settings">
+                <div class="navigation_title">
+                    <div class="text">設定・ポイント</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">個人情報設定</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">ポイント履歴</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="policy">
+                <div class="navigation_title">
+                    <div class="text">規約・ポリシー</div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">規約等</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="navigation_content">
+                    <div class="text">プライバシーポリシー</div>
+                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="tab_container">
+            <div class="tab active" onclick="showTab('tab1')">
+                出品済
+            </div>
+            <div class="tab" onclick="showTab('tab2')">
+                取引中
+            </div>
+            <div class="tab" onclick="showTab('tab3')">
+                売却済み
+            </div>
+        </div>
+        <div class="product_container">
+            <div id="tab1" class="tab_content">
+                {% for product in exhibited_products %}
+                    {% if product.is_available == True %}
+                        <a href="{% url 'product_description' product.id %}"
+                            class="exhibited_product_box {% if forloop.first %}first_product{% endif %}">
+                            <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                            <div class="product_name">{{ product.product_name }}</div>
+                            <div class="product_price">￥{{ product.price }}</div>
+                            <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                            <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
+                        </a>
+                    {% else %}                    
+                        <a href="{% url 'product_description' product.id %}"
+                            class="exhibited_product_box {% if forloop.first %}first_product{% endif %}">
+                            <div class="sold_product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                            <div class="product_name">{{ product.product_name }}</div>
+                            <div class="product_price">￥{{ product.price }}</div>
+                            <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                            <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
+                        </a>
+                    {% endif %}    
+                {% endfor %}
+            </div>
+
+            <div id="tab2" class="tab_content">
+                {% for product in trading_products %}
+                <a href="{% url 'product_description' product.id %}"
+                    class="trading_product_box {% if forloop.first %}first_product{% endif %}">
+                    <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                    <div class="product_name">{{ product.product_name }}</div>
+                    <div class="product_price">￥{{ product.price }}</div>
+                    <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                    <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
+                </a>
+                {% endfor %}
+            </div>
+
+            <div id="tab3" class="tab_content">
+                {% for product in sold_products %}
+                <a href="{% url 'product_description' product.id %}" 
+                    class="sold_product_box {% if forloop.first %}first_product{% endif %}">
+                    <div class="sold_product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                    <div class="product_name">{{ product.product_name }}</div>
+                    <div class="product_price">￥{{ product.price }}</div>
+                    <div class="liked_people"><i class="fa-regular fa-heart"></i>{{ product.like_set.count }}</div>
+                    <div class="commented"><i class="fa-regular fa-comment"></i>{{ product.comments.count }}</div>
+                 </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    // ページが読み込まれた際にtab1を表示する
+    document.addEventListener("DOMContentLoaded", function () {
+        showTab('tab1');
+    });
+
+    function showTab(tabId) {
+        // Hide all tab contents
+        var tabContents = document.querySelectorAll('.tab_content');
+        tabContents.forEach(function (tabContent) {
+            tabContent.style.display = 'none';
+        });
+
+        // Show the selected tab content
+        var selectedTab = document.getElementById(tabId);
+        if (selectedTab) {
+            selectedTab.style.display = 'block';
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // タブがクリックされたときの処理
+        var tabs = document.querySelectorAll('.tab');
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function (event) {
+                // すべてのタブからactiveクラスを削除
+                tabs.forEach(function (tab) {
+                    tab.classList.remove('active');
+                });
+                // クリックされたタブにactiveクラスを追加
+                event.target.classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,210 @@
+.container {
+    width: 100%;
+}
+
+.navigation_bar {
+    height: 48px;
+    width: 100px;
+    position: relative;
+}
+
+.reverse_button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 48px;
+    width: 431px;
+    display: flex;
+    align-items: center;
+}
+
+.exhibited_products_title {
+    position: absolute;
+    top: 0;
+    left: 431px;
+    height: 48px;
+    width: 1009px;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.reverse_button a {
+    font-size: 24px;
+}
+
+.container .main_content {
+    width: 100%;
+    height: 927px;
+    display: flex;
+}
+
+.container .main_content .left {
+    width: 411px;
+    height: 440px;
+}
+
+.container .main_content .right {
+    width: 1003px;
+    height: 927px;
+    margin-left: 20px;
+}
+
+/* ここまで全体のプロフィール画面の大きな構成 */
+
+.container .main_content .left .navigation .management {
+    height: 200px;
+}
+
+.container .main_content .left .navigation .settings {
+    height: 120px;
+}
+
+.container .main_content .left .navigation .policy {
+    height: 120px;
+}
+
+/* ここまで画面左部の大きな構成 */
+
+.navigation_title {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    font-size: 24px;
+    border-bottom: 1px solid black;
+}
+
+.navigation_content {
+    height: 40px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+
+.right_arrow {
+    margin-right: 10px;
+}
+
+.text {
+    margin-left: 15px;
+}
+
+a {
+    text-decoration: none;
+    /* 下線をなくす */
+    color: inherit;
+    /* 親要素からの継承されたカラーを使用 */
+}
+
+/* ここまで共通（画面左部） */
+
+.tab_container {
+    height: 49px;
+    width: 420px;
+    display: flex;
+}
+
+.tab {
+    height: 100%;
+    width: 140px;
+    font-size: 24px;
+    line-height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab.active {
+    border-bottom: 10px solid #F7B733;
+}
+
+/* ここから各タブの表示要素の処理  まずは出品中の商品から*/
+
+.first_product {
+    border-top: 1px solid black;
+}
+
+.exhibited_product_box,
+.trading_product_box,
+.sold_product_box {
+    height: 160px;
+    width: 100%;
+    display: flex;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+.product_image {
+    position: relative;
+    height: 160px;
+    width: 160px;
+}
+
+.product_image img {
+    height: 120px;
+    width: 120px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+/* この部分は売り切れ済みの商品にのみ追加 */
+.sold_product_image {
+    position: relative;
+    height: 160px;
+    width: 160px;
+}
+
+.sold_product_image img {
+    height: 120px;
+    width: 120px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.sold_product_image::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border-width: 0 0 30px 30px; /* 三角形の形状を指定 */
+    border-style: solid;
+    border-color: transparent red; /* 透明な左上の辺と赤色の塗りつぶし */
+}
+
+.product_name {
+    position: absolute;
+    top: 34px;
+    left: 172px;
+    height: 52px;
+    width: 769px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.product_price {
+    position: absolute;
+    top: 86px;
+    left: 172px;
+    height: 24px;
+    width: 57px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.liked_people {
+    position: absolute;
+    top: 115px;
+    left: 174px;
+    height: 25px;
+}
+
+.commented {
+    position: absolute;
+    top: 115px;
+    left: 213px;
+    height: 25px;
+}

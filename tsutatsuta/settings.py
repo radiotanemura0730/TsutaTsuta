@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "Main",
-    #allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     "sslserver",  # stripeのテストでhttpsにする必要があるため
     "bootstrap4"
 ]
@@ -59,23 +59,23 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    #allauth
-    'allauth.account.middleware.AccountMiddleware'
+    # allauth
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "tsutatsuta.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -115,14 +115,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email設定
 # オンライン決済時にメールが自動送信できるような設定を追加
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'ja'
+LANGUAGE_CODE = "ja"
 
-TIME_ZONE = 'Asia/Tokyo'
+TIME_ZONE = "Asia/Tokyo"
 
 USE_I18N = True
 
@@ -135,6 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -144,17 +145,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "Main.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-LOGIN_REDIRECT_URL= 'home'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-GIT_PATH = '/usr/bin/git'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+LOGIN_REDIRECT_URL = "home"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+GIT_PATH = "/usr/bin/git"
 
 STRIPE_API_KEY = 'sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'

@@ -2,11 +2,10 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 def validate_postal_code(value):
@@ -33,7 +32,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         _("username"),
         max_length=150,
-        unique=True, # usernameフィールドを一意にするため 
+        unique=True,  # usernameフィールドを一意にするため
         help_text=_(
             "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
@@ -210,10 +209,10 @@ class Address(models.Model):
     ]
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=20, default='')
-    last_name = models.CharField(max_length=20, default='')
-    first_name_kana = models.CharField(max_length=20, default='')
-    last_name_kana = models.CharField(max_length=20, default='')
+    first_name = models.CharField(max_length=20, default="")
+    last_name = models.CharField(max_length=20, default="")
+    first_name_kana = models.CharField(max_length=20, default="")
+    last_name_kana = models.CharField(max_length=20, default="")
     post = models.CharField(max_length=7, validators=[validate_postal_code])
     prefecture = models.CharField(max_length=2, choices=PREFECTURE_CHOICES, unique=True)
     city = models.CharField(max_length=50)
@@ -261,6 +260,14 @@ class Product(models.Model):
     Forestry = "森林科学科"
     Food_biology = "食品生物化学科"
 
+    past_exam = "過去問"
+    textbook_answer = "教科書の解答"
+    textbook = "教科書"
+    others = "その他"
+
+    buyer_responsibility = "着払い（購入者負担）"
+    seller_responsibility = "送料込み（出品者負担）"
+
     FACULTY_CHOICES = [
         (Soujin, "総合人間学部"),
         (Literature, "文学部"),
@@ -305,12 +312,23 @@ class Product(models.Model):
         (bad, "状態が悪い"),
     ]
 
+    GENRE_CHOICES = [
+        (past_exam, "過去問"),
+        (textbook_answer, "教科書の回答"),
+        (textbook, "教科書"),
+        (others, "その他"),
+    ]
+
+    RESPONSIBILITY_CHOICES = [
+        (buyer_responsibility, "着払い（購入者負担）"),
+        (seller_responsibility, "送料込み（出品者負担）"),
+    ]
+
     product_name = models.CharField(max_length=255)
     description = models.TextField()
     stripe_product_id = models.CharField(max_length=100)
     condition = models.CharField(max_length=10, choices=CONDITION_CHOICES)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    stripe_price_id = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=0)
     image = models.ImageField(upload_to="uploads/images/")
     gakubu_category = models.CharField(
         max_length=20, choices=FACULTY_CHOICES, default=Soujin
@@ -324,6 +342,8 @@ class Product(models.Model):
     seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     is_available = models.BooleanField(default=True)
+    genre = models.CharField(max_length=10, choices=GENRE_CHOICES)
+    responsibility = models.CharField(max_length=20, choices=RESPONSIBILITY_CHOICES)
 
     def __str__(self):
         return self.product_name

@@ -80,6 +80,14 @@ a {
     padding-top: 2px;
 }
 
+.header-user_noicon {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    padding-top: 2px;
+    background-color: #d9d9d9;
+}
+
 .header-uer_username {
     width: 43px;
     height: 24px;
