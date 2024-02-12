@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "sslserver",  # stripeのテストでhttpsにする必要があるため
+    "bootstrap4"
 ]
 
 MIDDLEWARE = [
@@ -156,5 +157,6 @@ LOGIN_REDIRECT_URL = "home"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 GIT_PATH = "/usr/bin/git"
 
-STRIPE_API_KEY = "sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd"
-STRIPE_PUBLISHABLE_KEY = "pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe"
+STRIPE_API_KEY = 'sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'
+STRIPE_API_PUBLIC_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'

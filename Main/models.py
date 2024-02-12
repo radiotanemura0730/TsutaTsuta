@@ -115,6 +115,7 @@ class CustomUser(AbstractUser):
     ]
 
     user_id = models.CharField(max_length=20)
+    stripe_customer_id = models.CharField(max_length=100, blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
     introduce = models.TextField(blank=True)
     icon = models.ImageField(upload_to="uploads/images/")
