@@ -11,6 +11,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, TemplateView, UpdateView
 
 from .forms import (
@@ -454,6 +456,7 @@ def payment_information(request, username):
 # # WEBHOOKのシークレットキー
 # endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
+
 @csrf_exempt
 @require_POST
 def create_card(request, username):
@@ -471,18 +474,20 @@ def create_card(request, username):
     # SetupIntentオブジェクト生成
     # カードの支払い情報を顧客に登録する
     session = stripe.checkout.Session.create(
-        customer = stripe_customer.id,
-        payment_method_types = ['card'],
-        mode = 'setup',
+        customer=stripe_customer.id,
+        payment_method_types=["card"],
+        mode="setup",
         client_reference_id=request.user.id,
-        success_url = 'https://example.com/checkout/return?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url = 'https://exaple.com/checkout/cancel',
+        success_url="https://example.com/checkout/return?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url="https://exaple.com/checkout/cancel",
     )
     print(session)
     # Stripeセッションを取得
     stripe_session = stripe.checkout.Session.retrieve(session.id)
     setup_intent_id = stripe_session.setup_intent
-    return JsonResponse({'clientSecret': session.client_secret, 'setupIntentId':setup_intent_id})
+    return JsonResponse(
+        {"clientSecret": session.client_secret, "setupIntentId": setup_intent_id}
+    )
 
 
 def create_card2(request, username):
@@ -490,12 +495,12 @@ def create_card2(request, username):
     # Save stripe customer infor
     if not current_customer.stripe_customer_id:
         customer = stripe.Customer.create()
-        current_customer.stripe_customer_id = customer['id']
+        current_customer.stripe_customer_id = customer["id"]
         current_customer.save()
     # Get Stripe payment method
     stripe_payment_methods = stripe.PaymentMethod.list(
-        customer = current_customer.stripe_customer_id,
-        type = "card",
+        customer=current_customer.stripe_customer_id,
+        type="card",
     )
     print(stripe_payment_methods)
     if stripe_payment_methods and len(stripe_payment_methods.data) > 0:
@@ -508,13 +513,16 @@ def create_card2(request, username):
         current_customer.stripe_card_last4 = ""
         current_customer.save()
     # SetupIntentオブジェクト生成
-    intent = stripe.SetupIntent.create(
-        customer = current_customer.stripe_customer_id
+    intent = stripe.SetupIntent.create(customer=current_customer.stripe_customer_id)
+    return render(
+        request,
+        "create_card2.html",
+        {
+            "client_secret": intent.client_secret,
+            "STRIPE_API_PUBLIC_KEY": settings.STRIPE_API_PUBLIC_KEY,
+        },
     )
-    return render(request, 'create_card2.html', {
-        "client_secret": intent.client_secret,
-        "STRIPE_API_PUBLIC_KEY": settings.STRIPE_API_PUBLIC_KEY,
-    })
+
 
 def thanks(request):
     return render(request, "thanks.html")
@@ -544,6 +552,7 @@ def like_product(request):
 
     return JsonResponse(context)
 
+
 def before_payment(request, username):
     user = get_object_or_404(CustomUser, username=username)
     address = Address.objects.filter(user=user)
@@ -553,6 +562,7 @@ def before_payment(request, username):
         "address": address[0],
     }
     return render(request, "before_payment.html", context)
+
 
 def after_payment(request):
     return render(request, "before_payment.html")

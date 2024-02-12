@@ -2,76 +2,130 @@
     display: flex;
 }
 
+.reverse_button {
+    font-size: 24px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
 .container .navigation .profile {
     margin-left: 650px;
     font-size: 25px;
 }
 
+/* ここまでページ上部の装飾 */
+
 .container .profile_content {
     margin-top: 10px;
     border-bottom: 1px solid #ccc;
+    height: 362px;
+    width: 100%;
+    border-bottom: 1px solid #3a9184;
 }
 
 .container .profile_content .user_details {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .container .profile_content .user_details .box1 {
     display: flex;
+    align-items: center;
 }
 
 .container .profile_content .user_details .box1 .usericon {
-    width: 80px; /* お好みのサイズに調整 */
-    height: 80px; /* お好みのサイズに調整 */
-    border-radius: 50%; /* 50%に設定することで円形になります */
-    overflow: hidden; /* 不要な部分を隠すために overflow: hidden を追加 */
+    width: 120px;
+    /* お好みのサイズに調整 */
+    height: 120px;
+    /* お好みのサイズに調整 */
+    border-radius: 50%;
+    /* 50%に設定することで円形になります */
+    overflow: hidden;
+    /* 不要な部分を隠すために overflow: hidden を追加 */
     margin-right: 10px;
     object-fit: cover;
 }
 
 .container .profile_content .user_details .box1 .usericon img {
-    width: 200%; /* 画像を親要素に合わせて表示するための設定 */
-    height: auto; /* アスペクト比を維持するための設定 */
-    display: block; /* 不要な余白を取り除くための設定 */ 
+    width: 200%;
+    /* 画像を親要素に合わせて表示するための設定 */
+    height: auto;
+    /* アスペクト比を維持するための設定 */
+    display: block;
+    /* 不要な余白を取り除くための設定 */
 }
 
+/* ここまでユーザーアイコンの表示 */
+
+.right_box1 {
+    width: 305px;
+    height: 91px;
+}
 
 .container .profile_content .user_details .box1 .right_box1 .username {
-    font-size: 20px;
+    font-size: 24px;
+    line-height: 24px;
 }
 
-.container .profile_content .user_details .box1 .right_box1 .user_id{
-    font-size: 12px;
+.container .profile_content .user_details .box1 .right_box1 .user_id {
+    font-size: 16px;
+    line-height: 24px;
     color: grey;
-} 
+}
 
-.container .profile_content .user_details .box1 .right_box1 .review_box {
+/* ここまでユーザーネームとユーザーIDを表示する部分 */
+
+.review_box {
+    display: flex;
+    align-items: center;
+}
+
+.review_box .review {
     display: flex;
 }
 
-.container .profile_content .user_details .box1 .right_box1 .review_box .review {
-    display: flex;
+.review i {
+    font-size: 44px;
+}
+
+.review_arrow i {
+    font-size: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.review_number {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 29px;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 
 /* ここからプロフィール編集の部分 */
 
 .container .profile_content .user_details .edit_profile {
-    border: 2px solid  #1bba88;/* ボーダーのスタイルと色を指定 */
-    padding: 6px; /* 任意の値を指定して内側の余白を設定 */
-    display: inline-block; /* インラインブロック要素にすることで、ボーダーが内容に合わせて表示されます */
-    border-radius: 8px; /* 任意の値を指定してボーダーラジアスを設定 */
-    margin-top: 30px;
-    margin-left: 50px;
+    border: 2px solid #1bba88;
+    /* ボーダーのスタイルと色を指定 */
+    padding: 6px;
+    /* 任意の値を指定して内側の余白を設定 */
+    display: inline-block;
+    /* インラインブロック要素にすることで、ボーダーが内容に合わせて表示されます */
+    border-radius: 11px;
+    /* 任意の値を指定してボーダーラジアスを設定 */
+    margin-left: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 20px;
-    width: 150px;
-}
-
-.container .profile_content .user_details .edit_profile .edit_profile_content {
-    font-size: 15px;
+    height: 25px;
+    width: 160px;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
 }
 
 /* ここから学部 */
@@ -83,12 +137,17 @@
 }
 
 .container .profile_content .faculty .gakubu_gakka {
-    width: 400px;  
+    width: 635px;
     display: flex;
 }
 
 .container .profile_content .faculty .gakubu_gakka .gakubu {
     margin-right: 10px;
+    font-size: 20px;
+}
+
+.gakka {
+    font-size: 20px;
 }
 
 /* ここまで学部・学科の話 */
@@ -100,7 +159,7 @@
 }
 
 .container .profile_content .introduce_box .introduce_content {
-    width: 400px;
+    width: 620px;
     height: 150px;
 }
 
@@ -116,7 +175,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 280px;
+    height: 507px;
     padding: 0;
     margin: 0;
 }
@@ -127,18 +186,45 @@
 }
 
 .table_cell {
-    flex: 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 240px;
+    align-items: center;
+}
+
+.product_image {
+    height: 160px;
+    width: 160px;
 }
 
 .table_cell .product_image img {
-    height: 50px;
-    width: 50px;
+    height: 160px;
+    width: 160px;
 }
 
+.table_cell .sold_product_image {
+    height: 160px;
+    width: 160px;
+    position: relative;
+}
 
+.table_cell .sold_product_image img {
+    height: 160px;
+    width: 160px;
+}
+
+.sold_product_image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-width: 0 0 35px 35px;
+    /* 三角形の形状を指定 */
+    border-style: solid;
+    border-color: transparent red;
+    /* 透明な左上の辺と赤色の塗りつぶし */
+}
 
 /* ここからもっと見るボタン */
 
@@ -148,17 +234,19 @@
 }
 
 .another_product .product_view_button {
-    border: 2px solid  black;/* ボーダーのスタイルと色を指定 */
-    padding: 6px; /* 任意の値を指定して内側の余白を設定 */
-    display: inline-block; /* インラインブロック要素にすることで、ボーダーが内容に合わせて表示されます */
-    border-radius: 8px; /* 任意の値を指定してボーダーラジアスを設定 */ 
-    background-color: rgb(244, 165, 19);
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #F7B733;
     color: white;
-    width: 400px;
-    height: 20px;
-    text-align: center;
+    width: 717px;
+    height: 40px;
 }
 
-
-
-
+.product_view_button a {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
+}
