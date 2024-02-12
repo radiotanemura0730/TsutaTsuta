@@ -24,9 +24,9 @@
                 {% if user.icon %}
                     <div class="user_icon"><img src="{{ user.icon.url }}" alt="User Icon"></div>
                 {% else %}
-                    <div class="blank">アイコンなし</div>
+                    <div class="blank"></div>
                 {% endif %}
-                <span class="username">{{ user.username }}</span>
+                <div class="username">{{ user.username }}</div>
             </div>
             <div class="notice"><i class="fa-regular fa-bell"></i></div>
             <a href="{% url 'index' %}" class="sale">

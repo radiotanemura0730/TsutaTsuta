@@ -24,7 +24,7 @@
                 <div class="review_box">
                     <div class="review">
                         {% for a in average_rating %}
-                            <div class="filled_star"><i class="fa-solid fa-star"></i></div>
+                            <div class="filled_star"><i class="fa-regular fa-star"></i></div>
                         {% endfor %}
                         {% for a in subtract_rating %}
                             <div class="empty_star"><i class="fa-regular fa-star"></i></div>
@@ -42,12 +42,14 @@
             {% endif %}            
         </div>
     </div>
+
     <div class="faculty">
         <div class="gakubu_gakka">           
             <div class="gakubu">{{ user.gakubu }}</div>
             <div class="gakka">{{ user.gakka }}</div>
         </div>
     </div>
+    
     <div class="introduce_box">
         <div class="introduce_content">{{ user.introduce }}</div>
     </div>       
@@ -57,13 +59,25 @@
     <ul class="product_table">
         <li class="table_row">
             {% for product in latest_user_products %}
-            <div class="table_cell">
-                <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
-                <div class="product_detail">
-                    <div class="product_name">{{ product.product_name }}</div>
-                    <div class="product_price">{{ product.price }}</div>
-                </div>
-            </div>
+                {% if product.is_available == True %}
+                    <a href="{% url 'product_description' product.id %}"
+                        class="table_cell">
+                        <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                        <div class="product_detail">
+                            <div class="product_name">{{ product.product_name }}</div>
+                            <div class="product_price">￥{{ product.price }}</div>
+                        </div>
+                    </a>
+                {% else %}
+                    <a href="{% url 'product_description' product.id %}"
+                    class="table_cell">
+                        <div class="sold_product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
+                        <div class="product_detail">
+                            <div class="product_name">{{ product.product_name }}</div>
+                            <div class="product_price">￥{{ product.price }}</div>
+                        </div>
+                    </a>
+                {% endif %}
             {% endfor %}
         </li>
         <li class="table_row">
@@ -72,7 +86,7 @@
                 <div class="product_image"><img src="{{ product.image.url }}" alt="Product Icon"></div>
                 <div class="product_detail">
                     <div class="product_name">{{ product.product_name }}</div>
-                    <div class="product_price">{{ product.price }}</div>
+                    <div class="product_price">￥{{ product.price }}</div>
                 </div>
             </div>
             {% endfor %}
@@ -81,7 +95,9 @@
 </div>
 
 <div class="another_product">
-    <div class="product_view_button"><a href="{% url 'profile' username=user.username %}">もっと見る</a></div>
+    <div class="product_view_button">
+        <a href="{% url 'profile' username=user.username %}">もっと見る</a>
+    </div>
 </div>
 {% endblock %}
                 
