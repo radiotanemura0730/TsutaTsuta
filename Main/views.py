@@ -610,3 +610,7 @@ def sell(request):
         "address": address,
     }
     return render(request, "sell.html", context)
+
+
+def temporary(request):
+    return render(request, "temporary.html")
