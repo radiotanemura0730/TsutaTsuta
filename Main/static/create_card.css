@@ -1,0 +1,18 @@
+form {
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.submit_button_icon {
+    margin-top: 50px;
+    width: 717px;
+    height: 40px;
+    border: 1px solid black;
+    background-color: #4ABDAC;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+}

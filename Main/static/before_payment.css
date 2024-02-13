@@ -1,0 +1,78 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 600px 458px; /* グリッドの列幅 */
+    /* grid-template-rows: 100px 300px 100px; */
+    /* row-gap: 10px; */
+    padding: 10px;
+    width: 430px;
+    margin-right: 16px;
+    margin-left: 16px;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.right {
+    margin-right: 45px;
+    margin-left: 45px;
+}
+
+.credit_card {
+    display: flex;
+}
+
+.logo_visa {
+    float: left;
+    height: 2em;
+    width: 40px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-right: 20px;
+}
+
+.credit_letter > span {
+    display: inline-block;
+    vertical-align: middle;
+} /* https://yu-z.com/vertical-alignment/#1line-height 参考 */
+
+.send_to_letter > span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.point > span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.point, .payment_method, .send_to {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+.point_use {
+    border-bottom: 1px solid #000;
+}
+
+.payment_breakdown {
+    border: solid 1px #000;
+    width: 458px;
+    height: 202px;
+}
+
+.icon_button {
+    height: 40px;
+}
+
+.submit_button_icon {
+    margin-top: 50px;
+    width: 453px;
+    border: 1px solid black;
+    background-color: #FC4A1A;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+}

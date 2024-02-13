@@ -6,9 +6,151 @@
 {% endblock %}
 
 {% block content %}
-    <div class="back"><a href="{% url 'home' %}"><</a></div>
+    <div class="back">&lt;<a href="{% url 'home' %}"></a></div>
     <div class="image"><img src="{{ product.image.url }}" alt="product image"></div>
     <div class="info">
-        {{ product.product_name }}
+        <div class="info-contents">
+            <div class="info-contents_name">{{ product.product_name }}</div>
+            <div class="info-contents_price">￥{{ product.price }}</div>
+            <div class="info-contents_like">
+                {% if is_user_like %}
+                    <button id="info-like_button">
+                        <i class="fa-solid fa-heart" id="heart"></i>
+                    </button>
+                {% else %}
+                    <button id="info-like_button">
+                        <i class="fa-regular fa-heart" id="heart"></i>
+                    </button>
+                {% endif %}
+                <span>いいね</span>
+            </div>
+            {% if transacation is None %}
+                {% if product.seller == user %}
+                    <a href="#" class="info-contents_edit">商品を編集する</a>
+                {% else %}
+                    <a href="#" class="info-contents_buy">購入する</a>
+                {% endif %}
+            {% else %}
+                {% if transaction.seller == user %}
+                    <a href="#" class="info-contents_transaction">取引画面へ</a>
+                {% elif transaction.buyer == user %}
+                    <a href="#" class="info-contents_transaction">取引画面へ</a>
+                {% else %}
+                    <a href="#" class="info-contents_sold">売り切れました</a>
+                {% endif %}
+            {% endif %}
+            <div class="info-contents_description">
+                <div>商品の説明</div>
+                <span>{{ product.description }}</span>
+            </div>
+            <div class="info-contents_time">{{ product.created_at|timesince }}前</div>
+            <div class="info-contents_label1">商品の情報</div>
+            <div class="info-contents_box">
+                <div>学部・学科<span>{{ product.gakubu_category }} > {{ product.gakka_category }}</span></div>
+                <div>ジャンル<span>{{ product.genre }}</span></div>
+                <div>商品の状態<span>{{ product.condition }}</span></div>
+                <div>配送料の負担<span>{{ product.responsibility }}</span></div>
+                <div>配送元の地域<span>{{ address.get_prefecture_display }}</span></div>
+                <div><span></span></div>
+            </div>
+            <div class="info-contents_label2">出品者</div>
+            <a class="info-contents_seller" href="#">
+                {% if product.seller.icon %}
+                    <img src="{{ product.seller.icon.url }}" alt="">
+                {% else %}
+                    <div class="info-seller_noicon"></div>
+                {% endif %}
+                <span>{{ product.seller.username }}</span>
+                {% if review == None %}
+                    <span>評価がありません</span>
+                {% else %}
+                    {% with ''|center:5 as range %}
+                    <div class="info-seller_star">
+                        {% for i in range %}
+                            <i class="{% if forloop.counter <= review.evaluate %}fa-solid{% else %}fa-regular{% endif %} fa-star"></i>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                {% endif %}
+            </a>
+            <div class="info-contents_comment">
+                <div class="info-comment_label">コメント({{ comment_length }})</div>
+                <div class="info-comment_box">
+                    {% for comment in comment_list %}
+                        <div class="info-box_contents">
+                            {% if comment.user.icon %}
+                                <img src="{{ comment.user.icon.url }}" alt="">
+                            {% else %}
+                                <span class="info-contents_noicon"></span>
+                            {% endif %}
+                            <span class="info-contents_username">{{ comment.user.username }}</span>
+                            <div><span>{{ comment.text }}</span></div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <form method="POST" class="info-comment_form">
+                    {% csrf_token %}
+                    <textarea name="text" cols="40" rows="5" placeholder="コメントする..."></textarea>
+                    <button type="submit">コメントを送信する</button>
+                </form>
+            </div>
+        </div>
     </div>
+    <div class="others">
+        <div class="others-label">{{ product.gakka_category }}のその他の{{ product.genre }}</div>
+        <div class="others-upperContainer">
+            {% for product in others %}
+                {% if forloop.counter <= 6 %}
+                    <a class="others-upperContainer_product" href="{% url 'product_description' product.id %}">
+                        <img src="{{ product.image.url }}" alt="">
+                        <span>￥{{ product.price }}</span>
+                        <span>{{ product.product_name }}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="others-underContainer">
+            {% for product in others %}
+                {% if forloop.counter > 6 and forloop.counter <= 12 %}
+                    <a class="others-underContainer_product" href="{% url 'product_description' product.id %}">
+                        <img src="{{ product.image.url }}" alt="">
+                        <span>￥{{ product.price }}</span>
+                        <span>{{ product.product_name }}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      document.getElementById('info-like_button').addEventListener('click', e => {
+        e.preventDefault();
+        const url = '{% url "like_product" %}';
+        fetch(url, {
+          method: 'POST',
+          body: `product_pk={{product.pk}}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+            console.log(response)
+          const icon = document.getElementById('heart')
+          if (response.method == 'create') {
+            icon.classList.remove('fa-regular')
+            icon.classList.add('fa-solid')
+            icon.id = 'heart'
+          } else {
+            icon.classList.remove('fa-solid')
+            icon.classList.add('fa-regular')
+            icon.id = 'heart'
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      });
+    </script>
 {% endblock %}
+

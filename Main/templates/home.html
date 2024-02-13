@@ -17,11 +17,15 @@
             </div>
             <div class="header-upperContainer_box">
                 <div class="header-box_user">
-                    <img src="{{ user.icon.url }}" alt="user icon" class="header-user_icon">
+                    {% if user.icon %}
+                        <img src="{{ user.icon.url }}" alt="user icon" class="header-user_icon">
+                    {% else %}
+                        <div class="header-user_noicon"></div>
+                    {% endif %}
                     <div class="header-user_username">{{ user.username }}</div>
                 </div>
                 <a href="#"><div class="header-box_alert"><i class="fa-regular fa-bell"></i></div></a>
-                <a href="#"><button class="header-box_sell">出品</button></a>
+                <a href="{% url 'sell' %}"><button class="header-box_sell">出品</button></a>
             </div>
             <div class="header-upperContainer_menu hidden">
                 <a href="#">マイページ<span>></span></a>

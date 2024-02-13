@@ -1,30 +1,54 @@
+import random
 from decimal import Decimal
 
 import stripe
 from django.conf import settings
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.db.models import OuterRef, Q, Subquery, Sum
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-
 from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, CustomAuthenticationForm
 from .models import Class, CustomUser, Product, Review, Transaction, Like
 from django.views.generic import CreateView, TemplateView, UpdateView, RedirectView
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.urls import reverse_lazy
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login
-import random
+from django.db.models import OuterRef, Q, Subquery, Sum
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from .forms import (
+    AvailableProductsForm,
+    CommentForm,
+    OnTransactionProductsForm,
+    SellForm,
+    SignUpAuthForm,
+    SignUpForm,
+    UserAddressForm,
+    UserProfileForm,
+)
+from .models import (
+    Address,
+    Class,
+    Comment,
+    CustomUser,
+    Like,
+    Product,
+    Review,
+    Transaction,
+)
+
 
 class SignUpView(CreateView):
     form_class = SignUpForm
-    template_name = 'Main/signup.html'
+    template_name = "Main/signup.html"
 
     def form_valid(self, form):
         super().form_valid(form)
-        random_number = random.randint(1000,9999)
+        random_number = random.randint(1000, 9999)
         random_number_str = str(random_number)
-        to_email = form.cleaned_data['email']
+        to_email = form.cleaned_data["email"]
         subject = "題名"
         message = "認証番号の" + random_number_str + "を入力してください"
         from_email = "system@example.com"
@@ -35,35 +59,39 @@ class SignUpView(CreateView):
         user_record.save()
         self.pk = int(user_record.id)
         return redirect("signup_auth", pk=self.object.id)
-    
+
     def get_success_url(self) -> str:
-        return reverse_lazy('signup_auth', kwargs={'pk' : self.object.id})
-    
-    
+        return reverse_lazy("signup_auth", kwargs={"pk": self.object.id})
+
+
 class SignUpAuthView(TemplateView):
-    template_name = 'Main/signup_auth.html'
-    
+    template_name = "Main/signup_auth.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = kwargs['pk']
+        pk = kwargs["pk"]
         user = CustomUser.objects.get(id=pk)
-        context['user_email'] = user.email
-        context['pk'] = pk
-        context['form'] = SignUpAuthForm()
+        context["user_email"] = user.email
+        context["pk"] = pk
+        context["form"] = SignUpAuthForm()
         return context
 
     def post(self, request, pk):
         form = SignUpAuthForm(request.POST)
         if form.is_valid():
-            entered_auth_number = form.cleaned_data['auth_number']
+            entered_auth_number = form.cleaned_data["auth_number"]
             user = CustomUser.objects.get(id=pk)
             saved_auth_number = user.auth_number
             if entered_auth_number == saved_auth_number:
-                return redirect('signup_done', pk=pk)
+                return redirect("signup_done", pk=pk)
             else:
                 return render(request, self.template_name, {'pk': pk, 'form': form, 'user_email':user.email,'error_message': '認証番号が正しくありません'})
         else:
-            return render(request, self.template_name, {'pk': pk, 'form': form, 'error_message': '入力が正しくありません'})
+            return render(
+                request,
+                self.template_name,
+                {"pk": pk, "form": form, "error_message": "入力が正しくありません"},
+            )
 
 class SignupResendEmailView(RedirectView):
     permanent = False
@@ -82,17 +110,19 @@ class SignupResendEmailView(RedirectView):
         return reverse_lazy(self.pattern_name, kwargs={'pk': pk})
 
 class SignUpDoneView(UpdateView):
-    template_name = 'Main/signup_done.html'
+    template_name = "Main/signup_done.html"
     model = CustomUser
-    fields = ('user_id',)
-    success_url = reverse_lazy('home')
+    fields = ("user_id",)
+    success_url = reverse_lazy("home")
 
     def form_valid(self,form):
         user_id = form.cleaned_data['user_id']
         if CustomUser.objects.filter(user_id=user_id).exists():
             return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message': 'このユーザーIDはすでに使用されています。'})
         response = super().form_valid(form)
-        CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data['user_id'])
+        CustomUser.objects.filter(pk=self.object.pk).update(
+            user_id=form.cleaned_data["user_id"]
+        )
         user = CustomUser.objects.get(pk=self.object.pk)
         login(self.request, user)
         return response
@@ -264,9 +294,24 @@ def delete_profile(request, username):
     return render(request, "delete_profile.html", context)
 
 
+def edit_address(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == "POST":
+        user_form = UserAddressForm(request.POST, request.FILES, instance=user)
+
+        if user_form.is_valid():
+            user_form.save()
+            return redirect(reverse("home_profile", args=[username]))
+
+    else:
+        user_form = UserAddressForm(instance=user)
+    return render(request, "edit_address.html", {"user_form": user_form})
+
+
 @login_required
 def home_view(request):
-    user = request.user
+    user = get_object_or_404(CustomUser, pk=request.user.pk)
     faculity = Product.FACULTY_CHOICES
     department = Product.DEPARTMENT_CHOICES
     transaction_exists = Transaction.objects.filter(
@@ -291,20 +336,63 @@ def home_view(request):
         "products_list": products_list,
         "studies_list": studies_list,
     }
-    print(studies_list)
     return render(request, "home.html", context)
 
 
 @login_required
 def product_description(request, product_id):
-    user = request.user
+    user = get_object_or_404(CustomUser, pk=request.user.pk)
+    form = CommentForm()
     product = Product.objects.get(id=product_id)
-    review = Review.objects.get(user=product.seller)
+    if Review.objects.filter(user=product.seller).exists():
+        review = Review.objects.get(user=product.seller)
+    else:
+        review = None
+    if Transaction.objects.filter(product=product).exists():
+        transaction = Transaction.objects.filter(product=product)
+    else:
+        transaction = None
+    time = timezone.now()
+    comment = Comment.objects.filter(product=product).order_by("-created_date")
+    comment_length = len(comment)
+    address = Address.objects.get(user=product.seller)
+    transaction_exists = Transaction.objects.filter(
+        product_id=OuterRef("pk"), buyer__isnull=False
+    ).values("product_id")[:1]
+    products_list = (
+        Product.objects.exclude(
+            Q(seller=user) | Q(pk__in=Subquery(transaction_exists)) | Q(pk=product.pk)
+        )
+        .filter(gakka_category=product.gakka_category)
+        .filter(genre=product.genre)
+    )
+    if Like.objects.filter(user=user, product=product).exists():
+        is_user_like = True
+    else:
+        is_user_like = False
     context = {
         "user": user,
         "product": product,
         "review": review,
+        "transaction": transaction,
+        "time": time,
+        "comment_list": comment,
+        "comment_length": comment_length,
+        "address": address,
+        "others": products_list,
+        "form": form,
+        "is_user_like": is_user_like,
     }
+
+    if request.POST:
+        new_comment = Comment(user=user, product=product)
+        form = CommentForm(request.POST, instance=new_comment)
+        if form.is_valid():
+            form.save()
+            return redirect("product_description", product_id)
+        else:
+            print(form.errors)
+
     return render(request, "product_description.html", context)
 
 
@@ -368,38 +456,112 @@ def bought_products(request, username):
     return render(request, "bought_products.html", context)
 
 
-def payment_information(request):
+@login_required
+def exhibited_products(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    exhibited_products = Product.objects.filter(seller=user)
+
+    trading_products = Transaction.objects.filter(seller=user)
+
+    sold_products = trading_products.filter(is_received=True)
+
+    trading_products = trading_products.difference(sold_products)
+
+    trading_products = [transaction.product for transaction in trading_products]
+
+    sold_products = [transaction.product for transaction in sold_products]
+
+    context = {
+        "user": user,
+        "exhibited_products": exhibited_products,
+        "trading_products": trading_products,
+        "sold_products": sold_products,
+    }
+
+    return render(request, "exhibited_products.html", context)
+
+
+def payment_information(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    context = {"user": user}
     template_name = "payment_information.html"
-    return render(request, template_name)
+    return render(request, template_name, context)
 
 
 # # WEBHOOKのシークレットキー
 # endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
 
-def create_card(request):
-    user = request.user
+@csrf_exempt
+@require_POST
+def create_card(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    domain = "https://127.0.0.1:8000"
+    # 開発状態ではこのドメインを使用
+    if settings.DEBUG:
+        domain = "http://127.0.0.1:8000"
     # セッションを開始するため、STRIPEのシークレットキーをセットする
-    stripe.api_key = settings.STRIPE_API_KEY
-
+    stripe.PaymentMethodDomain.create(domain_name=domain)
     # Customerオブジェクトを作成（引数は任意）
     stripe_customer = stripe.Customer.create(name=user.username)
+    print(stripe_customer.id)
+    print(stripe_customer.name)
     # SetupIntentオブジェクト生成
-    setup_intent = stripe.SetupIntent.create(
-        customer=stripe_customer.id,  # 生成したCustomerのIDを指定
-        payment_method_types=["card"],  # 支払い方法→今回はクレジットカード（"card"）
+    # カードの支払い情報を顧客に登録する
+    session = stripe.checkout.Session.create(
+        customer=stripe_customer.id,
+        payment_method_types=["card"],
+        mode="setup",
+        client_reference_id=request.user.id,
+        success_url="https://example.com/checkout/return?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url="https://exaple.com/checkout/cancel",
     )
-    # 作成したSetupIntentからclient_secretを取得する→テンプレートへ渡す
-    context = {
-        "client_secret": setup_intent.client_secret,
-    }
-    template_name = "create_card.html"
-    return render(request, template_name, context)
+    print(session)
+    # Stripeセッションを取得
+    stripe_session = stripe.checkout.Session.retrieve(session.id)
+    setup_intent_id = stripe_session.setup_intent
+    return JsonResponse(
+        {"clientSecret": session.client_secret, "setupIntentId": setup_intent_id}
+    )
+
+
+def create_card2(request, username):
+    current_customer = get_object_or_404(CustomUser, username=username)
+    # Save stripe customer infor
+    if not current_customer.stripe_customer_id:
+        customer = stripe.Customer.create()
+        current_customer.stripe_customer_id = customer["id"]
+        current_customer.save()
+    # Get Stripe payment method
+    stripe_payment_methods = stripe.PaymentMethod.list(
+        customer=current_customer.stripe_customer_id,
+        type="card",
+    )
+    print(stripe_payment_methods)
+    if stripe_payment_methods and len(stripe_payment_methods.data) > 0:
+        payment_method = stripe_payment_methods.data[0]
+        current_customer.stripe_payment_method_id = payment_method.id
+        current_customer.stripe_card_last4 = payment_method.card.last4
+        current_customer.save()
+    else:
+        current_customer.stripe_payment_method_id = ""
+        current_customer.stripe_card_last4 = ""
+        current_customer.save()
+    # SetupIntentオブジェクト生成
+    intent = stripe.SetupIntent.create(customer=current_customer.stripe_customer_id)
+    return render(
+        request,
+        "create_card2.html",
+        {
+            "client_secret": intent.client_secret,
+            "STRIPE_API_PUBLIC_KEY": settings.STRIPE_API_PUBLIC_KEY,
+        },
+    )
 
 
 def thanks(request):
-    template_name = "thanks.html"
-    return render(request, template_name)
+    return render(request, "thanks.html")
 
 
 def privacy_policy(request):
@@ -408,3 +570,78 @@ def privacy_policy(request):
 
 def rules(request):
     return render(request, "rules.html")
+
+
+def like_product(request):
+    product_pk = request.POST.get("product_pk")
+    context = {
+        "user": request.user.id,
+    }
+    product = get_object_or_404(Product, pk=product_pk)
+    like = Like.objects.filter(product=product, user=request.user)
+    if like.exists():
+        like.delete()
+        context["method"] = "delete"
+    else:
+        like.create(product=product, user=request.user)
+        context["method"] = "create"
+
+    return JsonResponse(context)
+
+
+def before_payment(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    address = Address.objects.filter(user=user)
+    print(address[0].last_name)
+    context = {
+        "user": user,
+        "address": address[0],
+    }
+    return render(request, "before_payment.html", context)
+
+
+def after_payment(request):
+    return render(request, "before_payment.html")
+
+
+@login_required
+def sell(request):
+    user = get_object_or_404(CustomUser, id=request.user.id)
+    if Address.objects.filter(user=user).exists():
+        address = Address.objects.get(user=user)
+    else:
+        address = None
+    form = SellForm()
+    if "confirm" in request.POST:
+        form = SellForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = Product()
+            lecture_name = form.cleaned_data["lecture"]
+            lecture_instance, _ = Class.objects.get_or_create(lecture=lecture_name)
+            product.classroom_category = lecture_instance
+            product.image = request.FILES["image"]
+            product.product_name = request.POST["product_name"]
+            product.gakubu_category = request.POST["gakubu_category"]
+            product.gakka_category = request.POST["gakka_category"]
+            product.genre = request.POST["genre"]
+            product.condition = request.POST["condition"]
+            product.description = request.POST["description"]
+            product.responsibility = request.POST["responsibility"]
+            product.price = request.POST["price"]
+            product.seller = user
+            product.save()
+            return redirect("home")
+        else:
+            print(form.errors)
+    elif "draft" in request.POST:
+        # 下書きを保存する処理
+        print("下書き保存")
+    elif "delete" in request.POST:
+        # 下書きを削除する処理
+        print("下書き削除")
+    context = {
+        "user": user,
+        "form": form,
+        "address": address,
+    }
+    return render(request, "sell.html", context)
