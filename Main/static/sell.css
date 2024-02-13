@@ -1,0 +1,323 @@
+.title {
+    font-size: 24px;
+    text-align: center;
+    width: 1440px;
+    height: 48px;
+    top: -48px;
+    position: relative;
+    line-height: 48px;
+    z-index: -10;
+}
+
+.sell-imageLabel {
+    top: 166px;
+    left: 187px;
+    position: absolute;
+    font-size: 24px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.sell-imageFlame {
+    width: 184px;
+    height: 160px;
+    position: absolute;
+    left: 186px;
+    top: 208px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    z-index: -100;
+}
+
+#image-preview {
+    width: 184px;
+    height: 160px;
+    position: absolute;
+    left: 186px;
+    top: 208px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    display: none;
+}
+
+#fileSelect {
+    top: 277px;
+    left: 210px;
+    position: absolute;
+    border-radius: 8px;
+    width: 137px;
+    height: 22px;
+    border: 1px solid #000;
+    gap: 8px;
+    background-color: #fff;
+    font-weight: 600;
+    z-index: 100;
+}
+
+form > * {
+    left: 186px;
+    position: absolute;
+}
+
+.sell-nameLabel {
+    width: 121px;
+    height: 24px;
+    top: 416px;
+    left: 188px;
+    position: absolute;
+    line-height: 24px;
+    font-size: 24px;
+}
+
+#product_name {
+    width: 497px;
+    height: 47px;
+    top: 456px;
+    left: 187px;
+    position: absolute;
+    border: solid 1px #000;
+    border-radius: 8px;
+    padding-top: 13px;
+    padding-left: 14px;
+    box-sizing: border-box;
+    line-height: 24px;
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+.sell-categoryLabel_description > textarea {
+    padding-top: 7px;
+    padding-left: 17px;
+    padding-right: 6px;
+    border: 1px solid #000;
+    border-radius: 11px;
+    width: 1062px;
+    height: 152px;
+}
+
+.sell-categoryLabel {
+    display: flex;
+    flex-direction: column;
+    top: 551px;
+    left: 188px;
+    position: absolute;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+input[type="radio"] {
+    visibility: hidden;
+    white-space: nowrap;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    margin: -1px;
+}
+
+.sell-categoryLabel_gakubu {
+    width: 1068px;
+    height: 522px;
+    padding-top: 12px;
+}
+
+.label {
+    line-height: 34px;
+    padding-left: 16px;
+    box-sizing: border-box;
+    border-left: 5px solid #4abdac;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.sell-gakubu_box {
+    width: 1068px;
+    height: 48px;   
+}
+
+.sell-categoryLabel > * {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.sell-gakubu_box > span {
+    width: 145px;
+    display: inline-block;
+    padding-top: 12px;
+    position: relative;
+    top: -12px;
+}
+
+label {
+    z-index: 10;
+    cursor: pointer;
+    height: 40px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+label::before, label::after {
+    content: attr(for);
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    padding-left: 7px;
+    padding-right: 7px;
+    line-height: 40px;
+    display: flex;
+    position: relative;
+}
+
+label::before {
+    background-color: #fff;
+    color: #000;
+}
+
+label::after {
+    opacity: 0;
+    background-color: #fc4a1a;
+    color: #fff;
+    top: -40px;
+}
+
+input:checked + label::after {opacity: 1;}
+
+.sell-categoryLabel_genre > label:first-of-type {
+    margin-left: 15px;
+}
+
+select, .sell-classroom_input, .sell-priceLabel_input {
+    width: 310px;
+    height: 40px;
+    border: 1px solid #000;
+    margin-top: 4px;
+    margin-left: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    padding-left: 17px;
+}
+
+.sell-deliverLabel {
+    display: flex;
+    flex-direction: column;
+    top: 1580px;
+    left: 187px;
+    position: absolute;
+}
+
+.sell-deliverLabel > div:first-child {
+    font-size: 24px;
+}
+
+.sell-region_alert {
+    font-size: 20px;
+    padding-left: 17px;
+}
+
+.sell-priceLabel {
+    top: 1805px;
+    left: 186px;
+    position: absolute;
+    height: 87px;
+}
+
+.sell-priceLabel > div {
+    font-size: 24px;
+}
+
+.sell-priceLabel_input {
+    padding-left: 50px;
+    margin-top: 16px;
+}
+
+.sell-priceLabel > div:first-child::after {
+    content: "￥";
+    position: absolute;
+    left: 36px;
+    top: 60px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.sell-box {
+    display: flex;
+    flex-direction: column;
+    width: 286px;
+    height: 95px;
+    top: 1809px;
+    left: 962px;
+    position: absolute;
+    border-radius: 13px;
+    border: 1px solid #3a9184;
+    padding-top: 19px;
+    padding-bottom: 19px;
+    padding-left: 34px;
+    box-sizing: border-box;
+}
+
+.sell-box > * {
+    border-left: 8px solid #4abdac;
+    font-size: 24px;
+    height: 29px;
+    line-height: 24px;
+    padding-left: 8px;
+}
+
+.sell-box > * > span {
+    left: 184px;
+    position: absolute;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.sell > button {
+    width: 1071px;
+    height: 40px;
+    text-align: center;
+    border-radius: 11px;
+    gap: 8px;    
+    left: 177px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.sell-confirm {
+    background-color: #4abdac;
+    color: #fff;
+    top: 2071px;
+    border: 1px solid #000;    
+}
+
+.sell-draft {
+    background-color: #fff;
+    border: 1px solid #4abdac;
+    color: #4abdac;
+    top: 2135px;
+}
+
+.sell-delete {
+    border: none;
+    color: #ff0000;
+    background-color: transparent;
+    top: 2199px;
+}
+
+.space  {
+    height: 200px;
+    display: block;
+    position: absolute;
+    top: 2199px;
+    width: 1px;
+}

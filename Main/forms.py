@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Address, Comment, CustomUser
+from .models import Address, Comment, CustomUser, Product
 
 
 class SignUpForm(UserCreationForm):
@@ -97,3 +97,21 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["text"]
+
+
+class SellForm(forms.ModelForm):
+    lecture = forms.CharField(label="授業", max_length=20, required=True)
+
+    class Meta:
+        model = Product
+        fields = [
+            "image",
+            "product_name",
+            "gakubu_category",
+            "gakka_category",
+            "genre",
+            "condition",
+            "description",
+            "responsibility",
+            "price",
+        ]

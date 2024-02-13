@@ -1,0 +1,219 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'sell.css' %}">
+{% endblock %}
+
+{% block headertitle %}出品{% endblock %}
+
+{% block content %}
+    <div class="title">商品の出品</div>
+    <form method="POST" class="sell" enctype="multipart/form-data" id="sell">
+        {% csrf_token %}
+        <div class="sell-imageLabel">出品商品</div>
+        <input type="file" name="image" id="image-input">
+        <button id="fileSelect" type="button">ファイルから選択</button>
+        <span class="sell-imageFlame"></span>
+        <img src="#" alt="Image Preview" id="image-preview">
+        <div class="sell-nameLabel">商品の名前</div>
+        <input type="text" name="product_name" id="product_name" maxlength="20" placeholder="商品の名前を入力">
+        <div class="sell-categoryLabel">
+            カテゴリー
+            <div class="sell-categoryLabel_gakubu">
+                <div class="label">学部カテゴリー</div>
+                <div class="sell-gakubu_box">
+                    <span>総合人間学部</span><input type="radio" name="gakka_category" value="総合人間学科" id="総合人間学科" required><label for="総合人間学科" id="soujin"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>文学部</span><input type="radio" name="gakka_category" value="人文学科" id="人文学科"><label for="人文学科" id="jinbun"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>教育学部</span><input type="radio" name="gakka_category" value="教育科学科" id="教育科学科"><label for="教育科学科" id="kyouiku"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>法学部</span><input type="radio" name="gakka_category" value="法学学科" id="法学学科"><label for="法学学科" id="hou"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>経済学部</span><input type="radio" name="gakka_category" value="経済経営学科" id="経済経営学科"><label for="経済経営学科" id="keizai"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>理学部</span><input type="radio" name="gakka_category" value="理学科" id="理学科"><label for="理学科" id="ri"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>医学部</span>
+                    <input type="radio" name="gakka_category" value="医学科" id="医学科"><label for="医学科" id="i"></label>
+                    <input type="radio" name="gakka_category" value="人間健康科学科" id="人間健康科学科"><label for="人間健康科学科" id="jinken"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>薬学部</span>
+                    <input type="radio" name="gakka_category" value="薬科学科" id="薬科学科"><label for="薬科学科" id="yakuka"></label>
+                    <input type="radio" name="gakka_category" value="薬学科" id="薬学科"><label for="薬学科" id="yaku"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>工学部</span>
+                    <input type="radio" name="gakka_category" value="地球工学科" id="地球工学科">
+                    <label for="地球工学科" id="chikyu"></label>
+                    <input type="radio" name="gakka_category" value="建築学科" id="建築学科">
+                    <label for="建築学科" id="kenchiku"></label>
+                    <input type="radio" name="gakka_category" value="物理工学科" id="物理工学科">
+                    <label for="物理工学科" id="butsuri"></label>
+                    <input type="radio" name="gakka_category" value="電気電子工学科" id="電気電子工学科">
+                    <label for="電気電子工学科" id="denden"></label>
+                    <input type="radio" name="gakka_category" value="情報学科" id="情報学科">
+                    <label for="情報学科" id="jouhou"></label>
+                    <input type="radio" name="gakka_category" value="工業化学科" id="工業化学科">
+                    <label for="工業化学科" id="kouka"></label>
+                </div>
+                <div class="sell-gakubu_box">
+                    <span>農学部</span>
+                    <input type="radio" name="gakka_category" value="資源生物科学科" id="資源生物科学科"><label for="資源生物科学科" id="shigen"></label>
+                    <input type="radio" name="gakka_category" value="応用生命科学科" id="応用生命科学科"><label for="応用生命科学科" id="ouyou"></label>
+                    <input type="radio" name="gakka_category" value="地球環境工学科" id="地球環境工学科"><label for="地球環境工学科" id="kankyo"></label>
+                    <input type="radio" name="gakka_category" value="食料・環境経済学科" id="食料・環境経済学科"><label for="食料・環境経済学科" id="syokuryo"></label>
+                    <input type="radio" name="gakka_category" value="森林科学科" id="森林科学科"><label for="森林科学科" id="shinrin"></label>
+                    <input type="radio" name="gakka_category" value="食品生物科学科" id="食品生物科学科"><label for="食品生物科学科" id="syokuhin"></label>
+                </div>
+            </div>
+            <div class="sell-categoryLabel_genre">
+                <div class="label">ジャンルカテゴリー</div>
+                <input type="radio" name="genre" value="過去問" id="過去問" required><label for="過去問" id="kakomon"></label>
+                <input type="radio" name="genre" value="教科書の解答" id="教科書の解答"><label for="教科書の解答" id="kaitou"></label>
+                <input type="radio" name="genre" value="教科書" id="教科書"><label for="教科書" id="kyokasyo"></label>
+                <input type="radio" name="genre" value="その他" id="その他"><label for="その他" id="sonota"></label>
+            </div>
+            <div class="sell-category_classroom">
+                <div class="label">授業カテゴリー</div>
+                <input type="text" maxlength="20" name="lecture" class="sell-classroom_input" placeholder="授業名を入力" required>
+            </div>
+            <div class="sell-categoryLabel_condition">
+                <div class="label">商品の状態</div>
+                <select name="condition" id="condition" required>
+                    <option hidden>選択してください</option>
+                    <option value="新品・未使用">新品・未使用</option>
+                    <option value="目立った汚れなし">目立った汚れなし</option>
+                    <option value="やや傷、汚れあり">やや傷、汚れあり</option>
+                    <option value="状態が悪い">状態が悪い</option>
+                </select>
+            </div>
+            <div class="sell-categoryLabel_description">
+                <div class="label">商品の説明</div>
+                <textarea name="description" cols="63" rows="5" maxlength="500" required></textarea>
+            </div>
+        </div>
+        <div class="sell-deliverLabel">
+            <div>配送について</div>
+            <div class="sell-deliverLabel_responsibility">
+                <div class="label">配送料の負担</div>
+                <select name="responsibility" id="responsibility" required>
+                    <option hidden>選択してください</option>
+                    <option value="着払い（購入者負担）">着払い（購入者負担）</option>
+                    <option value="送料込み（出品者負担）">送料込み（出品者負担）</option>
+                </select>
+            </div>
+            <div class="sell-deliverLabel_region">
+                <div class="label">配送元の地域</div>
+                {% if address == None %}
+                    <div class="sell-region_alert">住所を設定してください。</div>
+                {% else %}
+                    {{ address.get_prefecture_display }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="sell-priceLabel">
+            <div>販売価格(￥300～￥999999)</div>
+            <input class="sell-priceLabel_input type="number" min="300" max="999999" name="price" id="price" maxlength="6" oninput="calculate()" placeholder="商品の価格を入力" required>
+        </div>
+        <div class="sell-box">
+            <div class="sell-box_charge">販売手数料<span>￥200</span></div>
+            <div class="sell-box_profit">販売利益<span id="point">P 0</span></div>
+        </div>
+        <button type="submit" class="sell-confirm" name="confirm" onclick="checkAddress()">出品する</button>
+        <button type="submit" class="sell-draft" name="draft">上書き保存する</button>
+        <button type="submit" class="sell-delete" name="delete">削除する</button>
+        <div class="space"></div>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#image-input').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').attr('src', e.target.result);
+                        $('#image-preview').show();
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        const fileSelect = document.getElementById("fileSelect");
+        const fileElem = document.getElementById("image-input");
+
+        fileSelect.addEventListener("click", (e) => {
+        if (fileElem) {
+            fileElem.click();
+        }
+        }, false);
+    </script>
+
+    <script>
+        document.getElementById('sell').addEventListener('submit', function(event) {
+            var departmentMap = {
+                '総合人間学科': '総合人間学部',
+                '人文学科': '文学部',
+                '法学学科': '法学部',
+                '経済経営学科': '経済学部',
+                '理学科': '理学部',
+                '医学科': '医学部',
+                '人間健康科学科': '医学部',
+                '薬学科': '薬学部',
+                '薬科学科': '薬学部',
+                '地球工学科': '工学部',
+                '建築学科': '工学部',
+                '物理工学科': '工学部',
+                '電気電子工学科': '工学部',
+                '情報学科': '工学部',
+                '工業化学科': '工学部',
+                '資源生物科学科': '農学部',
+                '応用生命科学科': '農学部',
+                '地球環境工学科': '農学部',
+                '食品・環境経済学科': '農学部',
+                '森林科学科': '農学部',
+                '食品生物科学科': '農学部'
+            };
+
+            var selectedSubject = document.querySelector('input[name="gakka_category"]:checked').value;
+            var departmentValue = departmentMap[selectedSubject];
+
+            // 学部の値を隠しフィールドに設定する
+            var hiddenDepartmentField = document.createElement('input');
+            hiddenDepartmentField.type = 'hidden';
+            hiddenDepartmentField.name = 'gakubu_category';
+            hiddenDepartmentField.value = departmentValue;
+            this.appendChild(hiddenDepartmentField);
+        });
+    </script>
+    <script>
+        function calculate() {
+            var input = document.getElementById("price").value;
+            var result = Math.floor(input * 0.5);
+            document.getElementById("point").innerText = "P " + result;
+        }
+    </script>
+    <script>
+        function checkAddress() {
+            var address = '{{ address }}'
+            if (address == 'None') {
+                alert('住所を設定してください。');
+                return false
+            }
+        }
+    </script>
+{% endblock %}

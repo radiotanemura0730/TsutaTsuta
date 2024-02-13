@@ -19,6 +19,7 @@ from .forms import (
     AvailableProductsForm,
     CommentForm,
     OnTransactionProductsForm,
+    SellForm,
     SignUpAuthForm,
     SignUpForm,
     UserAddressForm,
@@ -275,7 +276,7 @@ def edit_address(request, username):
 
 @login_required
 def home_view(request):
-    user = request.user
+    user = get_object_or_404(CustomUser, pk=request.user.pk)
     faculity = Product.FACULTY_CHOICES
     department = Product.DEPARTMENT_CHOICES
     transaction_exists = Transaction.objects.filter(
@@ -305,7 +306,7 @@ def home_view(request):
 
 @login_required
 def product_description(request, product_id):
-    user = request.user
+    user = get_object_or_404(CustomUser, pk=request.user.pk)
     form = CommentForm()
     product = Product.objects.get(id=product_id)
     if Review.objects.filter(user=product.seller).exists():
@@ -566,3 +567,46 @@ def before_payment(request, username):
 
 def after_payment(request):
     return render(request, "before_payment.html")
+
+
+@login_required
+def sell(request):
+    user = get_object_or_404(CustomUser, id=request.user.id)
+    if Address.objects.filter(user=user).exists():
+        address = Address.objects.get(user=user)
+    else:
+        address = None
+    form = SellForm()
+    if "confirm" in request.POST:
+        form = SellForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = Product()
+            lecture_name = form.cleaned_data["lecture"]
+            lecture_instance, _ = Class.objects.get_or_create(lecture=lecture_name)
+            product.classroom_category = lecture_instance
+            product.image = request.FILES["image"]
+            product.product_name = request.POST["product_name"]
+            product.gakubu_category = request.POST["gakubu_category"]
+            product.gakka_category = request.POST["gakka_category"]
+            product.genre = request.POST["genre"]
+            product.condition = request.POST["condition"]
+            product.description = request.POST["description"]
+            product.responsibility = request.POST["responsibility"]
+            product.price = request.POST["price"]
+            product.seller = user
+            product.save()
+            return redirect("home")
+        else:
+            print(form.errors)
+    elif "draft" in request.POST:
+        # 下書きを保存する処理
+        print("下書き保存")
+    elif "delete" in request.POST:
+        # 下書きを削除する処理
+        print("下書き削除")
+    context = {
+        "user": user,
+        "form": form,
+        "address": address,
+    }
+    return render(request, "sell.html", context)
