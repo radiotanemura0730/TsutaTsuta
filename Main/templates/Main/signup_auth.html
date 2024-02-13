@@ -13,12 +13,16 @@
         <div>{{user_email}}に送信された４桁のコードを入力してください。</div>
         <div>受信していない場合は迷惑メールフォルダーを確認してください</div>
     </div>
-    <div class="email_repost">コードの再送信</div>
+    <form class="mail_resend" method="post" action="{% url 'signup_resend' pk=pk %}">
+        {% csrf_token %}
+        <input class="mail_resend_btn" type="submit" value="メールを再送信する">
+    </form>
     <form class="form" method="post">
         {% csrf_token %}
         {{form.as_p}}
-        <input class="form-btn" type="submit" value="check">
         <div>{{error_message}}</div>
+        <input class="form-btn" type="submit" value="check">
+        
     </form>
 </div>
 {% endblock %}

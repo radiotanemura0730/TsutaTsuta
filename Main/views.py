@@ -5,6 +5,10 @@ import stripe
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, CustomAuthenticationForm
+from .models import Class, CustomUser, Product, Review, Transaction, Like
+from django.views.generic import CreateView, TemplateView, UpdateView, RedirectView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.core.mail import send_mail
 from django.db.models import OuterRef, Q, Subquery, Sum
 from django.http import JsonResponse
@@ -13,7 +17,6 @@ from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.views.generic import CreateView, TemplateView, UpdateView
 
 from .forms import (
     AvailableProductsForm,
@@ -75,7 +78,6 @@ class SignUpAuthView(TemplateView):
 
     def post(self, request, pk):
         form = SignUpAuthForm(request.POST)
-        print(form)
         if form.is_valid():
             entered_auth_number = form.cleaned_data["auth_number"]
             user = CustomUser.objects.get(id=pk)
@@ -83,11 +85,7 @@ class SignUpAuthView(TemplateView):
             if entered_auth_number == saved_auth_number:
                 return redirect("signup_done", pk=pk)
             else:
-                return render(
-                    request,
-                    self.template_name,
-                    {"pk": pk, "form": form, "error_message": "認証番号が正しくありません"},
-                )
+                return render(request, self.template_name, {'pk': pk, 'form': form, 'user_email':user.email,'error_message': '認証番号が正しくありません'})
         else:
             return render(
                 request,
@@ -95,6 +93,21 @@ class SignUpAuthView(TemplateView):
                 {"pk": pk, "form": form, "error_message": "入力が正しくありません"},
             )
 
+class SignupResendEmailView(RedirectView):
+    permanent = False
+    pattern_name = 'signup_auth'
+
+    def get_redirect_url(self,*args, **kwargs):
+        pk = self.kwargs['pk']
+        user = CustomUser.objects.get(id=pk)
+        to_email = user.email
+        random_number_str = str(user.auth_number)
+        subject = "題名"
+        message = "認証番号の" + random_number_str + "を入力してください"
+        from_email = "system@example.com"
+        recipient_list = [to_email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+        return reverse_lazy(self.pattern_name, kwargs={'pk': pk})
 
 class SignUpDoneView(UpdateView):
     template_name = "Main/signup_done.html"
@@ -102,7 +115,10 @@ class SignUpDoneView(UpdateView):
     fields = ("user_id",)
     success_url = reverse_lazy("home")
 
-    def form_valid(self, form):
+    def form_valid(self,form):
+        user_id = form.cleaned_data['user_id']
+        if CustomUser.objects.filter(user_id=user_id).exists():
+            return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message': 'このユーザーIDはすでに使用されています。'})
         response = super().form_valid(form)
         CustomUser.objects.filter(pk=self.object.pk).update(
             user_id=form.cleaned_data["user_id"]
@@ -110,6 +126,25 @@ class SignUpDoneView(UpdateView):
         user = CustomUser.objects.get(pk=self.object.pk)
         login(self.request, user)
         return response
+    
+class CustomLoginView(LoginView):
+    authentication_form = CustomAuthenticationForm
+    template_name = 'Main/login.html'
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'Main/password_reset.html'
+    success_url = reverse_lazy('password_reset_done')
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'Main/password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'Main/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'Main/password_reset_complete.html'
 
 
 def index(request):

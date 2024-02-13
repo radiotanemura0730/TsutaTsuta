@@ -17,7 +17,7 @@
             </div>
             <div class="header-sub-container">
                 <div class="header-sub-container__back">
-                <a href="login"><div class="header-sub-container__back__block">&lt;</div></a>
+                <a href="{% url 'login' %}"><div class="header-sub-container__back__block">&lt;</div></a>
                 </div>
                 <span class="header-sub-container__title">
                     {% block header-title %}{% endblock %}
@@ -26,7 +26,9 @@
         </div>
     </header>
     {% endblock %}
-    {% block content %}
-    {% endblock %}
+ 
+        {% block content %}
+        {% endblock %}
+  
 </body>
 </html>

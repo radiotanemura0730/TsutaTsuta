@@ -1,3 +1,7 @@
+.header-sub-container__back__block{
+    display: none;
+}
+
 .content{
     text-align: center;
     width: 717px;
@@ -9,6 +13,7 @@
     font-size: 20px;
     margin-top: 20px;
 }
+
 
 .form-part__text{
     text-align: left;
@@ -45,6 +50,20 @@ p > input {
     margin: 20px auto auto 0;
 }
 
-.error_message{
-    color: red;
+.check_text{
+    text-align: left;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.to_signup{
+    text-align: right;
+    font-size: 14px;
+    margin: 15px 0 10px;
+}
+
+.to_password_reset{
+    text-align: right;
+    font-size: 14px;
+    margin: 10px 0 0;
 }
