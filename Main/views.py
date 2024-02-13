@@ -112,20 +112,23 @@ class SignupResendEmailView(RedirectView):
 class SignUpDoneView(UpdateView):
     template_name = "Main/signup_done.html"
     model = CustomUser
-    fields = ("user_id",)
+    fields = ("user_id","username")
     success_url = reverse_lazy("home")
 
     def form_valid(self,form):
         user_id = form.cleaned_data['user_id']
         if CustomUser.objects.filter(user_id=user_id).exists():
-            return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message': 'このユーザーIDはすでに使用されています。'})
+            return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message_2': 'このユーザーIDはすでに使用されています。'})
         response = super().form_valid(form)
-        CustomUser.objects.filter(pk=self.object.pk).update(
-            user_id=form.cleaned_data["user_id"]
-        )
+        CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data["user_id"])
+        CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data["username"])
         user = CustomUser.objects.get(pk=self.object.pk)
         login(self.request, user)
         return response
+    
+    def form_invalid(self, form):
+        return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message_1': 'このユーザー名はすでに使用されています。'})
+
     
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
@@ -134,7 +137,12 @@ class CustomLoginView(LoginView):
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'Main/password_reset.html'
     success_url = reverse_lazy('password_reset_done')
-
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        if not CustomUser.objects.filter(email=email).exists():
+            form.add_error('email', 'このメールアドレスは登録されていません。')
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'Main/password_reset_done.html'
