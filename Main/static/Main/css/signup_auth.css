@@ -13,12 +13,22 @@
     margin-top: 10px;
     font-size: 16px;
 }
-
-.email_repost{
+.mail_resend{
+    margin-top: 15px;
+    text-align: left;
+    margin-left: 110px;
+}
+.mail_resend_btn{
     margin-top: 15px;
     text-align: left;
     margin-left: 110px;
     font-size: 12px;
+    background-color: white;
+    font-size: 14px;
+    color: rgb(69, 122, 245);
+    border: solid 1px white;
+    border-radius: 8px;
+    margin: 10px auto auto 0;
 }
 
 p > input{

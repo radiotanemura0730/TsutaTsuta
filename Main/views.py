@@ -9,12 +9,11 @@ from django.urls import reverse
 
 from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, CustomAuthenticationForm
 from .models import Class, CustomUser, Product, Review, Transaction, Like
-from django.views.generic import CreateView, TemplateView, UpdateView
+from django.views.generic import CreateView, TemplateView, UpdateView, RedirectView
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login
-from django.core.exceptions import ValidationError
 import random
 
 class SignUpView(CreateView):
@@ -62,10 +61,25 @@ class SignUpAuthView(TemplateView):
             if entered_auth_number == saved_auth_number:
                 return redirect('signup_done', pk=pk)
             else:
-                return render(request, self.template_name, {'pk': pk, 'form': form, 'error_message': '認証番号が正しくありません'})
+                return render(request, self.template_name, {'pk': pk, 'form': form, 'user_email':user.email,'error_message': '認証番号が正しくありません'})
         else:
             return render(request, self.template_name, {'pk': pk, 'form': form, 'error_message': '入力が正しくありません'})
 
+class SignupResendEmailView(RedirectView):
+    permanent = False
+    pattern_name = 'signup_auth'
+
+    def get_redirect_url(self,*args, **kwargs):
+        pk = self.kwargs['pk']
+        user = CustomUser.objects.get(id=pk)
+        to_email = user.email
+        random_number_str = str(user.auth_number)
+        subject = "題名"
+        message = "認証番号の" + random_number_str + "を入力してください"
+        from_email = "system@example.com"
+        recipient_list = [to_email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+        return reverse_lazy(self.pattern_name, kwargs={'pk': pk})
 
 class SignUpDoneView(UpdateView):
     template_name = 'Main/signup_done.html'

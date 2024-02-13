@@ -6,6 +6,7 @@ urlpatterns = [
     path('login', views.CustomLoginView.as_view(), name='login'),
     path('signup', views.SignUpView.as_view(), name='signup'),
     path('signup_auth/<int:pk>', views.SignUpAuthView.as_view(), name='signup_auth'),
+    path('signup_auth/<int:pk>/resend',views.SignupResendEmailView.as_view(), name='signup_resend'),
     path('signup_done/<int:pk>', views.SignUpDoneView.as_view(), name='signup_done'),
     path('password_reset', views.CustomPasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done', views.CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
