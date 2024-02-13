@@ -44,4 +44,5 @@ urlpatterns = [
     path("rules/", views.rules, name="rules"),
     path("like_product/", views.like_product, name="like_product"),
     path("sell/", views.sell, name="sell"),
+    path("temporary/", views.temporary, name="temporary"),
 ]
