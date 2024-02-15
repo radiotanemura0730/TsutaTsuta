@@ -133,6 +133,7 @@ class SignUpDoneView(UpdateView):
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'Main/login.html'
+    redirect_authenticated_user = True
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'Main/password_reset.html'
