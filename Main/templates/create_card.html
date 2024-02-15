@@ -1,5 +1,6 @@
 {% extends 'Main/base.html' %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block extra_style %}
 <link rel="stylesheet" href="{% static 'create_card.css' %}">
@@ -24,7 +25,6 @@
 </header>
 {% endblock %}
 
-
 {% block content %}
     <!-- inputタグでclient_secretを渡す→JavaScriptで値（value）を取得する -->
     <input type="hidden" id="client_secret" value="{{ client_secret }}">
@@ -43,3 +43,4 @@
     
     <script src="{% static 'js/stripe.js' %}"></script>
 {% endblock %}
+
