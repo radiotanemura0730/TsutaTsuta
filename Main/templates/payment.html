@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8"> 
+    </head>
+    <body>
+        <form action="{% url 'payment_post' %}" method="POST">
+            <input type="hidden" name="amount" value="{{ amount }}"/>
+            <p>合計金額：{{ amount }}円</p>
+            {% for c in card_list %}
+            <div>
+                <!-- 今回はStripeからのカード情報の取得順で使用するカードを指定 -->
+                <input type="radio" name="card_number" value="{{ forloop.counter0 }}" required/>
+                <!-- 顧客が登録してあるカード情報の表示→表示する項目は選択するカードたちを区別できるものにする -->
+                <p>{{ c.card.brand }}<br>{{ c.card.exp_month }}/{{ c.card.exp_year }}<br>下４桁{{ c.card.last4 }}</p>
+            </div>
+            {% endfor %}
+            <button type="submit">支払い確定</button>{% csrf_token %}
+        </form>
+    </body>

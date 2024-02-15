@@ -3,6 +3,7 @@
 
 {% block extra_style %}
 <link rel="stylesheet" href="{% static 'before_payment.css' %}">
+<script src="js/payment.js"></script>
 {% endblock %}
 
 {% block header %}
@@ -31,16 +32,19 @@
             <span>*******(教材名)</span>
         </div>
         <div class="point">
-            <span>ポイントを使用する<br>所有ポイント p****</span>
-            <span class="point_use">p ***</span>
+            <span>ポイントを使用する<br>所有ポイント p{{ user.point }} </span>
+            p
+            <input type="submit" class="point_input" id="pointInput" value="0" min="0" max="{{ user.point }}">
         </div>
         <div class="payment_method">
             <div>支払い方法</div>
             <div class="credit_card">
-                <div class="img"><img src="../static/media/Visa_Brandmark_Blue_RGB_2021.svg" alt="VISAのロゴ" class="logo_visa"></div>
+                <div class="img"><img src="Main\static\media\Visa_Brandmark_Blue_RGB_2021.svg" alt="VISAのロゴ" class="logo_visa"></div>
                 <div class="credit_letter">
-                    <span>クレジットカード決済<br>****************</span>
-                    <span class="change_link"><a href="{% url 'payment_information' username=user.username %}">変更する</a></span>
+                    <span>クレジットカード決済<br>
+                        {% for c in card_list %}
+                        ************{{ c.card.last4 }}</span>
+                        {% endfor %}
                 </div>
             </div>
         </div>
@@ -54,10 +58,13 @@
     </div>
     <div class="right">
         <div class="payment_breakdown">
-            <div>商品代金 ￥*****</div>
-            <div>使用ポイント p*****</div>
+            <div>商品代金 ￥{{ amount }} </div>
+            <div>
+                使用ポイントp
+                <span id="use_point"></span>
+            </div>
             <div>支払金額 ￥*****</div>
-            <div>支払い方法  *****</div>
+            <div>支払い方法  クレジットカード</div>
         </div>
         <div class="icon_button">
             <div class="submit_button_icon">購入する</div>
