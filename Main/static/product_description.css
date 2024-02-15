@@ -14,6 +14,7 @@ button {
     height: 48px;
     top: 48px;
     position: absolute;
+    line-height: 48px;
 }
 
 .back a {
@@ -242,6 +243,17 @@ button {
     top: 24px;
     left: 18px;
     border-radius: 100%;
+}
+
+.info-seller_noicon {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    background-color: #d9d9d9;
+    display: inline-block;
+    position: absolute;
+    top: 24px;
+    left: 18px;
 }
 
 .info-contents_seller > span:nth-child(2) {

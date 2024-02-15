@@ -14,11 +14,21 @@
         {% csrf_token %}
         <div class="form-part">
             <div class="form-part__text">
+                <span class="form-part__user_id">ユーザー名</span>
+                <span class="form-part__message">＊後ほど変更できます</span>
+            </div>
+            <p>{{ form.username }}</p>
+        </div>
+        <div class="form-part">
+            <div class="form-part__text">
                 <span class="form-part__user_id">ユーザーID</span>
                 <span class="form-part__message">＊後ほど変更できます</span>
             </div>
             <p>{{ form.user_id }}</p>
+            
         </div>
+        <div class="error_message">{{error_message_1}}</div>
+        <div class="error_message">{{error_message_2}}</div>
         <input class="form-btn" type="submit" value="始める">
     </form>
 

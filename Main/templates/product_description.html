@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="back"><a href="{% url 'home' %}"></a></div>
+    <div class="back">&lt;<a href="{% url 'home' %}"></a></div>
     <div class="image"><img src="{{ product.image.url }}" alt="product image"></div>
     <div class="info">
         <div class="info-contents">
@@ -55,7 +55,11 @@
             </div>
             <div class="info-contents_label2">出品者</div>
             <a class="info-contents_seller" href="#">
-                <img src="{{ product.seller.icon.url }}" alt="">
+                {% if product.seller.icon %}
+                    <img src="{{ product.seller.icon.url }}" alt="">
+                {% else %}
+                    <div class="info-seller_noicon"></div>
+                {% endif %}
                 <span>{{ product.seller.username }}</span>
                 {% if review == None %}
                     <span>評価がありません</span>

@@ -1,0 +1,42 @@
+{% extends "Main/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'Main/css/login.css' %}">
+{% endblock %}
+{% block header-title%}ログイン{% endblock %}
+
+{% block content %}
+<div class="content">
+    <form class="form" method="post">
+        {% csrf_token %}
+        <div class="form-part">
+            <div class="form-part__text">
+                <span class="form-part__user_id">メールアドレス</span>
+                <span class="form-part__message">＊aaa@のメールアドレスのみ利用できます</span>
+            </div>
+            <p>{{ form.username }}</p>
+        </div>
+        <div class="form-part">
+            <div class="form-part__text">
+                <span class="form-part__user_id">パスワード</span>
+            </div>
+            <p>{{ form.password }}</p>
+        </div>
+        {% if form.errors %}
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+        <input class="form-btn" type="submit" value="ログイン">
+        
+        <div class="check_text"><a href="rules">利用規約</a>及び<a href="privacy_policy">プライバシーポリシー</a>に同意の上、ログインへお進みください。</div>
+        <div class="to_signup"><a href="signup">会員登録はこちら&gt;</a></div>
+        <div class="to_password_reset"><a href="{% url 'password_reset' %}">パスワードを忘れた方はこちら&gt;</a></div>
+    </form>
+</div>
+{% endblock %}

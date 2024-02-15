@@ -34,3 +34,8 @@ form.addEventListener('submit', async (event) => {
         // none
     }
 });
+
+// 支払金額を取得
+var paymentAmount = document.getElementById('paymentAmount').textContent;
+// 隠しフィールドに設定
+document.getElementById('paymentAmountInput').value = paymentAmount;
