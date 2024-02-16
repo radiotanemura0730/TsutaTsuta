@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="back">&lt;<a href="{% url 'home' %}"></a></div>
+    <div class="back"><a href="{% url 'home' %}">&lt;</a></div>
     <div class="image"><img src="{{ product.image.url }}" alt="product image"></div>
     <div class="info">
         <div class="info-contents">
@@ -28,15 +28,15 @@
                 {% if product.seller == user %}
                     <a href="#" class="info-contents_edit">商品を編集する</a>
                 {% else %}
-                    <a href="#" class="info-contents_buy">購入する</a>
+                    <a href="{% url 'payment' user.username %}" class="info-contents_buy">購入する</a>
                 {% endif %}
             {% else %}
-                {% if transaction.seller == user %}
-                    <a href="#" class="info-contents_transaction">取引画面へ</a>
-                {% elif transaction.buyer == user %}
-                    <a href="#" class="info-contents_transaction">取引画面へ</a>
-                {% else %}
+                {% if product.is_available == False %}
                     <a href="#" class="info-contents_sold">売り切れました</a>
+                {% elif transaction.buyer == user %}
+                    <a href="{% url 'temporary' %}" class="info-contents_transaction">取引画面へ</a>
+                {% elif transaction.seller == user %}
+                    <a href="{% url 'temporary' %}" class="info-contents_transaction">取引画面へ</a>
                 {% endif %}
             {% endif %}
             <div class="info-contents_description">
@@ -54,7 +54,7 @@
                 <div><span></span></div>
             </div>
             <div class="info-contents_label2">出品者</div>
-            <a class="info-contents_seller" href="#">
+            <a class="info-contents_seller" href="{% url 'temporary' %}">
                 {% if product.seller.icon %}
                     <img src="{{ product.seller.icon.url }}" alt="">
                 {% else %}
@@ -90,7 +90,7 @@
                 </div>
                 <form method="POST" class="info-comment_form">
                     {% csrf_token %}
-                    <textarea name="text" cols="40" rows="5" placeholder="コメントする..."></textarea>
+                    <textarea name="text" cols="40" rows="5" placeholder="コメントする..." maxlength="200"></textarea>
                     <button type="submit">コメントを送信する</button>
                 </form>
             </div>

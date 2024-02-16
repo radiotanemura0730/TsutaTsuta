@@ -216,4 +216,9 @@
             }
         }
     </script>
+    <script>
+        let link = document.getElementById('back');
+        let url = '{% url "home_profile" user.username %}';
+        link.setAttribute('href', url);
+    </script>
 {% endblock %}

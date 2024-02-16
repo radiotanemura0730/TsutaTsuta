@@ -5,23 +5,27 @@ import stripe
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .forms import UserProfileForm, SignUpForm, SignUpAuthForm, AvailableProductsForm, OnTransactionProductsForm, CustomAuthenticationForm
-from .models import Class, CustomUser, Product, Review, Transaction, Like
-from django.views.generic import CreateView, TemplateView, UpdateView, RedirectView
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
 from django.core.mail import send_mail
 from django.db.models import OuterRef, Q, Subquery, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, TemplateView, UpdateView, View
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.generic import CreateView, RedirectView, TemplateView, UpdateView
 
 from .forms import (
     AvailableProductsForm,
     CommentForm,
+    CustomAuthenticationForm,
     OnTransactionProductsForm,
     SellForm,
     SignUpAuthForm,
@@ -41,6 +45,7 @@ from .models import (
 )
 
 stripe.api_key = settings.STRIPE_API_KEY
+
 
 class SignUpView(CreateView):
     form_class = SignUpForm
@@ -87,7 +92,16 @@ class SignUpAuthView(TemplateView):
             if entered_auth_number == saved_auth_number:
                 return redirect("signup_done", pk=pk)
             else:
-                return render(request, self.template_name, {'pk': pk, 'form': form, 'user_email':user.email,'error_message': '認証番号が正しくありません'})
+                return render(
+                    request,
+                    self.template_name,
+                    {
+                        "pk": pk,
+                        "form": form,
+                        "user_email": user.email,
+                        "error_message": "認証番号が正しくありません",
+                    },
+                )
         else:
             return render(
                 request,
@@ -95,12 +109,13 @@ class SignUpAuthView(TemplateView):
                 {"pk": pk, "form": form, "error_message": "入力が正しくありません"},
             )
 
+
 class SignupResendEmailView(RedirectView):
     permanent = False
-    pattern_name = 'signup_auth'
+    pattern_name = "signup_auth"
 
-    def get_redirect_url(self,*args, **kwargs):
-        pk = self.kwargs['pk']
+    def get_redirect_url(self, *args, **kwargs):
+        pk = self.kwargs["pk"]
         user = CustomUser.objects.get(id=pk)
         to_email = user.email
         random_number_str = str(user.auth_number)
@@ -109,53 +124,79 @@ class SignupResendEmailView(RedirectView):
         from_email = "system@example.com"
         recipient_list = [to_email]
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-        return reverse_lazy(self.pattern_name, kwargs={'pk': pk})
+        return reverse_lazy(self.pattern_name, kwargs={"pk": pk})
+
 
 class SignUpDoneView(UpdateView):
     template_name = "Main/signup_done.html"
     model = CustomUser
-    fields = ("user_id","username")
+    fields = ("user_id", "username")
     success_url = reverse_lazy("home")
 
-    def form_valid(self,form):
-        user_id = form.cleaned_data['user_id']
+    def form_valid(self, form):
+        user_id = form.cleaned_data["user_id"]
         if CustomUser.objects.filter(user_id=user_id).exists():
-            return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message_2': 'このユーザーIDはすでに使用されています。'})
+            return render(
+                self.request,
+                self.template_name,
+                {
+                    "pk": self.object.id,
+                    "form": form,
+                    "error_message_2": "このユーザーIDはすでに使用されています。",
+                },
+            )
         response = super().form_valid(form)
-        CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data["user_id"])
-        CustomUser.objects.filter(pk=self.object.pk).update(user_id=form.cleaned_data["username"])
+        CustomUser.objects.filter(pk=self.object.pk).update(
+            user_id=form.cleaned_data["user_id"]
+        )
+        CustomUser.objects.filter(pk=self.object.pk).update(
+            user_id=form.cleaned_data["username"]
+        )
         user = CustomUser.objects.get(pk=self.object.pk)
         login(self.request, user)
         return response
-    
-    def form_invalid(self, form):
-        return render(self.request, self.template_name, {'pk': self.object.id, 'form': form, 'error_message_1': 'このユーザー名はすでに使用されています。'})
 
-    
+    def form_invalid(self, form):
+        return render(
+            self.request,
+            self.template_name,
+            {
+                "pk": self.object.id,
+                "form": form,
+                "error_message_1": "このユーザー名はすでに使用されています。",
+            },
+        )
+
+
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
-    template_name = 'Main/login.html'
+    template_name = "Main/login.html"
     redirect_authenticated_user = True
 
+
 class CustomPasswordResetView(PasswordResetView):
-    template_name = 'Main/password_reset.html'
-    success_url = reverse_lazy('password_reset_done')
+    template_name = "Main/password_reset.html"
+    success_url = reverse_lazy("password_reset_done")
+
     def form_valid(self, form):
-        email = form.cleaned_data['email']
+        email = form.cleaned_data["email"]
         if not CustomUser.objects.filter(email=email).exists():
-            form.add_error('email', 'このメールアドレスは登録されていません。')
+            form.add_error("email", "このメールアドレスは登録されていません。")
             return self.form_invalid(form)
         return super().form_valid(form)
 
+
 class CustomPasswordResetDoneView(PasswordResetDoneView):
-    template_name = 'Main/password_reset_done.html'
+    template_name = "Main/password_reset_done.html"
+
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'Main/password_reset_confirm.html'
-    success_url = reverse_lazy('password_reset_complete')
+    template_name = "Main/password_reset_confirm.html"
+    success_url = reverse_lazy("password_reset_complete")
+
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = 'Main/password_reset_complete.html'
+    template_name = "Main/password_reset_complete.html"
 
 
 def index(request):
@@ -354,7 +395,7 @@ def home_view(request):
 def product_description(request, product_id):
     user = get_object_or_404(CustomUser, pk=request.user.pk)
     form = CommentForm()
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
     if Review.objects.filter(user=product.seller).exists():
         review = Review.objects.get(user=product.seller)
     else:
@@ -498,27 +539,29 @@ def payment_information(request, username):
     context = {"user": user}
     return render(request, "payment_information.html", context)
 
+
 # # WEBHOOKのシークレットキー
 # endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
-
 
 
 def create_card(request, username):
     user = get_object_or_404(CustomUser, username=username)
     stripe_customer = stripe.Customer.create(
         name=user.username,
-        )
+    )
     setup_intent = stripe.SetupIntent.create(
-        customer=stripe_customer.id,# 生成したCustomerのIDを指定
+        customer=stripe_customer.id,  # 生成したCustomerのIDを指定
         payment_method_types=["card"],
-        )
+    )
     context = {
         "client_secret": setup_intent.client_secret,
     }
     return render(request, "create_card.html", context)
 
+
 def thanks(request):
     return render(request, "thanks.html")
+
 
 def privacy_policy(request):
     return render(request, "privacy_policy.html")
@@ -545,16 +588,15 @@ def like_product(request):
     return JsonResponse(context)
 
 
-
 def payment(request, username):
     user = get_object_or_404(CustomUser, username=username)
     address = Address.objects.filter(user=user)
-    customer_id = user.stripe_customer_id # CustomerオブジェクトIDを格納するフィールド名（任意）
+    customer_id = user.stripe_customer_id  # CustomerオブジェクトIDを格納するフィールド名（任意）
     price = 2000
     card_list = stripe.Customer.list_payment_methods(
-            customer_id,# CustomerオブジェクトID
-            type="card",
-            )
+        customer_id,  # CustomerオブジェクトID
+        type="card",
+    )
     context = {
         "user": user,
         "address": address[0],
@@ -563,32 +605,34 @@ def payment(request, username):
     }
     return render(request, "payment.html", context)
 
+
 def payment_post(request):
     user = request.user
     customer_id = user.stripe_customer_id
-    
+
     stripe_card = stripe.Customer.list_payment_methods(
         customer_id,
         type="card",
-        )
+    )
 
     # 今回はStripeからのカード情報の取得順によって、支払いに使用するカードを指定する
-    card_number = request.POST.get('card_number')
+    card_number = request.POST.get("card_number")
     selected_card = stripe_card["data"][int(card_number)]["id"]
-    amount = request.POST.get('amount')
+    amount = request.POST.get("amount")
 
     # これで支払の処理を完了する
-    payment_intent = stripe.PaymentIntent.create(
-            amount=amount, # 支払金額
-            currency='jpy', # 利用通貨
-            customer=customer_id, # CustomerオブジェクトID
-            payment_method=selected_card, # 支払いに使用するクレジットカード
-            off_session=True, # 支払いの実行時に顧客が決済フローに存在しないことを示す
-            confirm=True, # PaymentIntentの作成と確認を同時に行う
-            )
+    stripe.PaymentIntent.create(
+        amount=amount,  # 支払金額
+        currency="jpy",  # 利用通貨
+        customer=customer_id,  # CustomerオブジェクトID
+        payment_method=selected_card,  # 支払いに使用するクレジットカード
+        off_session=True,  # 支払いの実行時に顧客が決済フローに存在しないことを示す
+        confirm=True,  # PaymentIntentの作成と確認を同時に行う
+    )
     # PaymentIntentオブジェクトIDをDBに保存する場合は、「payment_intent.id」をsave()でDB保存する
 
     return redirect("payment_complete")
+
 
 def payment_complete(request):
     return render(request, "payment_complete.html")
@@ -639,3 +683,7 @@ def sell(request):
 
 def temporary(request):
     return render(request, "temporary.html")
+
+
+class LogoutView(LoginRequiredMixin, LogoutView):
+    next_page = reverse_lazy("login")

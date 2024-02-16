@@ -140,12 +140,18 @@ a {
     cursor: pointer;
 }
 
-.header-upperContainer_menu a:nth-child(5) {
-    border-bottom: none;
+.header-upperContainer_menu > *:nth-child(5) > button {
     color: #b00020;
     text-align: center;
     width: 247px;
     display: block;
+    cursor: pointer;
+}
+
+.header-upperContainer_menu > *:nth-child(5) > button {
+    background-color: transparent;
+    border: none;
+    padding-top: 8px;
 }
 
 .header-upperContainer_menu a span {

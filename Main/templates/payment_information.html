@@ -43,37 +43,32 @@
     </div>
     <button type="submit" class="submit_button_icon">更新する</button>
 </div>
-
-{% endblock %}
-
-{% block script %}
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const checkbox = document.querySelector('.credit_card');
-    const displayCredit = document.querySelector('.displayCredit');
-    const checkboxes = document.querySelectorAll('.after2nd');
-    const displayTexts = document.querySelectorAll('.displayText');
-
-    checkbox.addEventListener('click', function() {
-        if (this.checked) {
-                displayCredit.style.display = 'block'; // テキストを表示
-            } else {
-                displayCredit.style.display = 'none'; // テキストを非表示
-            }
-    }); /* クレジットカード追加用 */
-
-    checkboxes.forEach((checkbox,index) => {
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.querySelector('.credit_card');
+        const displayCredit = document.querySelector('.displayCredit');
+        const checkboxes = document.querySelectorAll('.after2nd');
+        const displayTexts = document.querySelectorAll('.displayText');
+    
         checkbox.addEventListener('click', function() {
             if (this.checked) {
-                displayTexts[index].style.display = 'block'; // テキストを表示
-            } else {
-                displayTexts[index].style.display = 'none'; // テキストを非表示
-            }
-        });
-    }); /* クレジットカード以外は利用できない */
-});
-
-
-</script>
+                    displayCredit.style.display = 'block'; // テキストを表示
+                } else {
+                    displayCredit.style.display = 'none'; // テキストを非表示
+                }
+        }); /* クレジットカード追加用 */
+    
+        checkboxes.forEach((checkbox,index) => {
+            checkbox.addEventListener('click', function() {
+                if (this.checked) {
+                    displayTexts[index].style.display = 'block'; // テキストを表示
+                } else {
+                    displayTexts[index].style.display = 'none'; // テキストを非表示
+                }
+            });
+        }); /* クレジットカード以外は利用できない */
+    });
+    
+    
+    </script>
 {% endblock %}
