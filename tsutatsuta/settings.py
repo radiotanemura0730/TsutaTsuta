@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "sslserver",  # stripeのテストでhttpsにする必要があるため
-    "bootstrap4"
+    "bootstrap4",
 ]
 
 MIDDLEWARE = [
@@ -153,10 +153,12 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "login"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 GIT_PATH = "/usr/bin/git"
 
-STRIPE_API_KEY = 'sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'
-STRIPE_API_PUBLIC_KEY = 'pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe'
+STRIPE_API_KEY = "sk_test_51OZnnyAiXkxmyRDeD8awXPlAHIIT7OJXDLrJqUTZOy6u1RCDbMxmmsx2nYRgeGT1nAtrp4RJyTRBLHd23s6A6ofE00yqDq2Czd"
+STRIPE_PUBLISHABLE_KEY = "pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe"
+STRIPE_API_PUBLIC_KEY = "pk_test_51OZnnyAiXkxmyRDeucSGGEKApynBgv8EeBdFF7IjOnxPtonAH31dmwqktZNmCM4wxs5UmbQXOzjoMQMTWPUql3A000ehqwxHwe"

@@ -214,7 +214,7 @@ class Address(models.Model):
     first_name_kana = models.CharField(max_length=20, default="")
     last_name_kana = models.CharField(max_length=20, default="")
     post = models.CharField(max_length=7, validators=[validate_postal_code])
-    prefecture = models.CharField(max_length=2, choices=PREFECTURE_CHOICES, unique=True)
+    prefecture = models.CharField(max_length=2, choices=PREFECTURE_CHOICES)
     city = models.CharField(max_length=50)
     house_number = models.CharField(max_length=50, validators=[validate_number])
     building = models.CharField(max_length=10)
@@ -373,7 +373,7 @@ class Transaction(models.Model):
         future_datetime = current_datetime + timedelta(days=5)
 
         # モデルのフィールドに値を設定
-        self.delivery_date = future_datetime
+        self.delivery_date = timezone.make_aware(future_datetime)
 
         super().save(*args, **kwargs)
 

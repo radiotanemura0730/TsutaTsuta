@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 a {
     text-decoration: none;
     color: black;
@@ -14,7 +18,6 @@ button {
     height: 48px;
     top: 48px;
     position: absolute;
-    line-height: 48px;
 }
 
 .back a {

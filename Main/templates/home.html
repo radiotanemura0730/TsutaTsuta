@@ -24,15 +24,19 @@
                     {% endif %}
                     <div class="header-user_username">{{ user.username }}</div>
                 </div>
-                <a href="#"><div class="header-box_alert"><i class="fa-regular fa-bell"></i></div></a>
+                <a href="{% url 'temporary' %}"><div class="header-box_alert"><i class="fa-regular fa-bell"></i></div></a>
                 <a href="{% url 'sell' %}"><button class="header-box_sell">出品</button></a>
             </div>
             <div class="header-upperContainer_menu hidden">
-                <a href="#">マイページ<span>></span></a>
-                <a href="#">プロフィール<span>></span></a>
-                <a href="#">出品した商品<span>></span></a>
-                <a href="#">購入した商品<span>></span></a>
-                <a href="#">ログアウト</a>
+                <a href="{% url 'home_profile' user.username %}">マイページ<span>></span></a>
+                <a href="{% url 'profile' user.username %}">プロフィール<span>></span></a>
+                <a href="{% url 'exhibited_products' user.username %}">出品した商品<span>></span></a>
+                <a href="{% url 'bought_products' user.username %}">購入した商品<span>></span></a>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">ログアウト</button>
+                </form>
+                
             </div>
         </div>
         <div class="header-underContainer">
