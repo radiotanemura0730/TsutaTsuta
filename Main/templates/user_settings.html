@@ -20,19 +20,23 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">出品した商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'exhibited_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">いいねした商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'liked_products' username=user.username %}"><i
+                                class="fa-solid fa-chevron-right"></i></a></div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">購入した商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
-                </div>             
+                    <div class="right_arrow"><a href="{% url 'bought_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
                 <div class="navigation_content">
                     <div class="text">下書き</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'temporary' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="settings">
@@ -41,11 +45,13 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">個人情報設定</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'user_settings' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">ポイント履歴</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'temporary' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="policy">
@@ -54,11 +60,13 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">規約等</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'rules' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">プライバシーポリシー</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'privacy_policy' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,10 +75,10 @@
         <div class="right_title">アカウント</div>
         <div class="right_content"><a href="{% url 'edit_profile' username=user.username %}">プロフィール設定</a></div>
         <div class="right_content"><a href="{% url 'edit_address' username=user.username %}">住所設定</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">支払い設定</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">メールアドレス変更</a></div>
-        <div class="right_content"><a href="{% url 'index' %}">パスワード変更</a></div>
-        <div class="account_delete"><a href="{% url 'index' %}">アカウント削除</a></div>
+        <div class="right_content"><a href="{% url 'temporary' %}">支払い設定</a></div>
+        <div class="right_content"><a href="{% url 'temporary' %}">メールアドレス変更</a></div>
+        <div class="right_content"><a href="{% url 'temporary' %}">パスワード変更</a></div>
+        <div class="account_delete"><a href="{% url 'delete_profile' username=user.username %}">アカウント削除</a></div>
     </div>
 
 {% endblock %}

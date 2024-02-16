@@ -242,6 +242,40 @@ def profile(request, username):
 
 
 @login_required
+def all_product_profile(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    is_own_profile = user == request.user
+
+    user_products = Product.objects.filter(seller=user)
+
+    reviews = Review.objects.filter(user=user)
+
+    if reviews.exists():
+        average_rating = sum([review.evaluate for review in reviews]) / len(reviews)
+        average_rating = round(average_rating, 0)
+        average_rating = int(average_rating)
+        average_rate = list(range(average_rating))
+        subtract_rating = list(range(5 - average_rating))
+    else:
+        average_rate = None
+        subtract_rating = list(range(5))
+
+    review_number = len(reviews)
+
+    context = {
+        "user": user,
+        "is_own_profile": is_own_profile,
+        "average_rating": average_rate,
+        "subtract_rating": subtract_rating,
+        "review_number": review_number,
+        "user_products": user_products,
+    }
+
+    return render(request, "all_product_profile.html", context)
+
+
+@login_required
 def home_profile(request, username):
     user = get_object_or_404(CustomUser, username=username)
 
@@ -296,12 +330,15 @@ def edit_profile(request, username):
 
         if user_form.is_valid():
             user_form.save()
-            return redirect(reverse("home_profile", args=[username]))
+            new_username = user_form.cleaned_data["username"]
+            return redirect(reverse("home_profile", args=[new_username]))
 
     else:
         user_form = UserProfileForm(instance=user)
 
-    return render(request, "edit_profile.html", {"user_form": user_form})
+    context = {"user_form": user_form, "username": username}
+
+    return render(request, "edit_profile.html", context)
 
 
 @login_required
@@ -331,7 +368,7 @@ def delete_profile(request, username):
 
     if request.method == "POST":
         user.delete()
-        return redirect("index")
+        return redirect("delete_confirm")
 
     context = {
         "user": user,
@@ -563,12 +600,20 @@ def thanks(request):
     return render(request, "thanks.html")
 
 
-def privacy_policy(request):
-    return render(request, "privacy_policy.html")
+def privacy_policy(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    context = {"user": user}
+
+    return render(request, "privacy_policy.html", context)
 
 
-def rules(request):
-    return render(request, "rules.html")
+def rules(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    context = {"user": user}
+
+    return render(request, "rules.html", context)
 
 
 def like_product(request):

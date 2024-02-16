@@ -1,16 +1,10 @@
-{% extends 'Main/base.html' %}
+{% extends 'Main/base_edit.html' %}
 
-{% block css %}<link rel="stylesheet" href="../../static/delete_profile.css">{% endblock %}
+{% block extra_style %}<link rel="stylesheet" href="../../static/delete_profile.css">{% endblock %}
+
+{% block header-title %}アカウント削除{% endblock %}
 
 {% block content %}
-<div class="navigation_bar">
-    <div class="reverse_button">
-        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
-    </div>
-    <div class="delete_title">アカウント削除</div>
-</div>
-
-
 <div class="message_container">
     <div class="message_box">
         <div class="delete_message">この作業は取り消せません。<br>アカウントを本当に削除しますか。</div>
@@ -33,7 +27,7 @@
                         {% endfor %}
                         {% for a in subtract_rating %}
                             <div class="empty_star"><i class="fa-regular fa-star"></i></div>
-                        {% endfor%}   
+                        {% endfor %}   
                     </div>
                     <div class="review_number">{{ review_number }}</div>
                 </div>

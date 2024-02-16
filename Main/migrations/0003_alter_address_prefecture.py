@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("Main", "0002_alter_product_gakka_category"),
+        ("Main", "0002_alter_address_phone_alter_product_gakka_category"),
     ]
 
     operations = [

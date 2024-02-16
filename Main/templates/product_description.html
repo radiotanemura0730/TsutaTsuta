@@ -125,7 +125,7 @@
     <script type="text/javascript">
       document.getElementById('info-like_button').addEventListener('click', e => {
         e.preventDefault();
-        const url = '{% url "like_product" %}';
+        const url = '{% url "liked_products" username=user.username %}';
         fetch(url, {
           method: 'POST',
           body: `product_pk={{product.pk}}`,

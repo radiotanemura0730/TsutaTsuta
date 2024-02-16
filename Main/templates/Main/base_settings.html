@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'Main/css/base.css' %}" />
+    {% block extra_style %}{% endblock %}
+    <title>Tsutatuta</title>
+</head>
+<body>
+    {% block header %}
+    <header class="header">
+        <div class="header-container">
+            <div class="header-main-container">
+                <span class="header-main-container__title">tsutastuta</span>
+            </div>
+            <div class="header-sub-container">
+                <div class="header-sub-container__back">
+                <a href="{% url 'home_profile' username=user.username %}"><div class="header-sub-container__back__block">&lt;</div></a>
+                </div>
+                <span class="header-sub-container__title">
+                    {% block header-title %}{% endblock %}
+                </span>
+            </div>
+        </div>
+    </header>
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

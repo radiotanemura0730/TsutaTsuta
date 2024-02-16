@@ -1,7 +1,7 @@
 {% extends 'base_profile.html' %}
 
 {% block css %}
-    <link rel="stylesheet" href="../../static/home_profile.css">
+<link rel="stylesheet" href="../../static/home_profile.css">
 {% endblock %}
 
 {% block content %}
@@ -15,19 +15,23 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">出品した商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'exhibited_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">いいねした商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'liked_products' username=user.username %}"><i
+                                class="fa-solid fa-chevron-right"></i></a></div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">購入した商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
-                </div>             
+                    <div class="right_arrow"><a href="{% url 'bought_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
                 <div class="navigation_content">
                     <div class="text">下書き</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'temporary' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="settings">
@@ -36,11 +40,13 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">個人情報設定</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'user_settings' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">ポイント履歴</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'temporary' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="policy">
@@ -49,11 +55,13 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">規約等</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'rules' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">プライバシーポリシー</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="right_arrow"><a href="{% url 'privacy_policy' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,16 +75,17 @@
             </div>
             <div class="username_box">
                 <div class="username">{{ user.username }}</div>
-                <div class="user_arrow"><i class="fa-solid fa-angle-right"></i></div>  
+                <div class="user_arrow"><a href="{% url 'profile' username=user.username %}" class="fa-solid fa-angle-right"></a></div>
             </div>
+
             <div class="review_box">
                 <div class="review">
                     {% for a in average_rating %}
-                        <div class="filled_star"><i class="fa-solid fa-star"></i></div>
+                    <div class="filled_star"><i class="fa-solid fa-star"></i></div>
                     {% endfor %}
                     {% for a in subtract_rating %}
-                        <div class="empty_star"><i class="fa-regular fa-star"></i></div>
-                    {% endfor%}   
+                    <div class="empty_star"><i class="fa-regular fa-star"></i></div>
+                    {% endfor%}
                 </div>
                 <div class="review_number">{{ review_number }}</div>
                 <div class="review_arrow"><i class="fa-solid fa-angle-right"></i></div>
@@ -94,6 +103,6 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </div>
 {% endblock %}

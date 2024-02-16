@@ -28,7 +28,7 @@
                 {% endif %}
                 <div class="username">{{ user.username }}</div>
             </div>
-            <div class="notice"><i class="fa-regular fa-bell"></i></div>
+            <div class="notice"><a href="{% url 'temporary' %}"><i class="fa-regular fa-bell"></i></a></div>
             <a href="{% url 'sell' %}" class="sale">
                 出品
             </a>

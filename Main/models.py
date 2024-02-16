@@ -218,7 +218,7 @@ class Address(models.Model):
     city = models.CharField(max_length=50)
     house_number = models.CharField(max_length=50, validators=[validate_number])
     building = models.CharField(max_length=10)
-    phone = models.CharField(max_length=10, validators=[validate_number])
+    phone = models.CharField(max_length=12, validators=[validate_number])
 
 
 class Product(models.Model):

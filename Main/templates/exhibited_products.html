@@ -21,22 +21,22 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">出品した商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'exhibited_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">いいねした商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
-                    </div>
+                    <div class="right_arrow"><a href="{% url 'liked_products' username=user.username %}"><i
+                                class="fa-solid fa-chevron-right"></i></a></div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">購入した商品</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'bought_products' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">下書き</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'temporary' %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -46,12 +46,12 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">個人情報設定</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'user_settings' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">ポイント履歴</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'temporary' %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -61,12 +61,12 @@
                 </div>
                 <div class="navigation_content">
                     <div class="text">規約等</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'rules' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="navigation_content">
                     <div class="text">プライバシーポリシー</div>
-                    <div class="right_arrow"><a href="{% url 'index' %}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <div class="right_arrow"><a href="{% url 'privacy_policy' username=user.username %}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>

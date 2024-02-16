@@ -1,16 +1,10 @@
-{% extends 'Main/base.html' %}
+{% extends 'Main/base_settings.html' %}
 
-{% block css %}<link rel="stylesheet" href="../../static/privacy_policy.css">{% endblock %}
+{% block extra_style %}<link rel="stylesheet" href="../../static/privacy_policy.css">{% endblock %}
+
+{% block header-title %}会員登録{% endblock %}
 
 {% block content %}
-<div class="navigation_bar">
-    <div class="reverse_button">
-        <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
-    </div>
-    <div class="privacy_policy_title">会員登録</div>
-</div>
-
-<div class="gap"></div>
 <div class="privacy_policy">プライバシーポリシー</div>
 <div class="privacy_policy_container">
     <div class="privacy_policy_box"></div>

@@ -1,14 +1,16 @@
-{% extends 'Main/base.html' %}
+{% extends 'Main/base_edit.html' %}
 
-{% block css %}<link rel="stylesheet" href="../../static/edit_profile.css">{% endblock %}
+{% block extra_style %}<link rel="stylesheet" href="../../static/edit_profile.css">{% endblock %}
+
+{% block header-title %}プロフィール設定{% endblock %}
 
 {% block content %}
-<div class="navigation_bar">
+<!-- <div class="navigation_bar">
     <div class="reverse_button">
         <a href="{% url 'home_profile' username=user.username %}"><i class="fa-solid fa-angle-left"></i></a>
     </div>
     <div class="settings_title">プロフィール設定</div>
-</div>
+</div> -->
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form_container">
