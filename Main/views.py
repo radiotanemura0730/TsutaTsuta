@@ -395,7 +395,12 @@ def edit_address(request, username):
 
     else:
         user_form = UserAddressForm(instance=user)
-    return render(request, "edit_address.html", {"user_form": user_form})
+
+    context = {
+        "user_form": user_form,
+        "user": user,
+    }
+    return render(request, "edit_address.html", context)
 
 
 @login_required

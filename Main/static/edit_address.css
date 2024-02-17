@@ -1,8 +1,136 @@
 .form {
-    text-align: center;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+}
+
+/* ラベル全体の装飾 */
+form label {
+    font-size: 24px;
+    line-height: 24px;
+}
+
+/* 仮置きの境界線 */
+.form_container {
+    width: 880px;
+}
+
+.real_name_container {
+    padding-left: 169px;
+}
+
+.address_container {
+    padding-left: 169px;
+}
+
+.phone_container {
+    padding-left: 169px;
+}
+
+/* フォーム同士の空白の調整 */
+.border_line_container {
+    width: 100%;
+    height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.border_line {
+    width: 880px;
+    height: 3px;
+    background-color: #D9D9D9;
+}
+
+.lower_border_line {
+    width: 717px;
+    height: 3px;
+    background-color: #D9D9D9;
+}
+
+/* テキストを入力する部分の調整 */
+.last_name_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.first_name_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.post_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+#id_prefecture {
+    width: 310px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.city_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.house_number_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.building_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.phone_field input[type="text"] {
+    width: 542px;
+    /* 幅 */
+    height: 40px;
+    /* 高さ */
+    margin-top: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
 }
 
 .submit_button_icon {
+    margin-left: 82px;
     margin-top: 50px;
     width: 717px;
     height: 40px;

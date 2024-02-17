@@ -1,25 +1,9 @@
-{% extends 'Main/base.html' %}
+{% extends 'Main/base_edit.html' %}
 {% load static %}
 
 {% block extra_style %}<link rel="stylesheet" href="{% static 'edit_address.css' %}">{% endblock %}
 
-{% block header %}
-<header class="header">
-    <div class="header-container">
-        <div class="header-main-container">
-            <span class="header-main-container__title">tsutastuta</span>
-        </div>
-        <div class="header-sub-container">
-            <div class="header-sub-container__back">
-            <a href="{% url 'user_settings' username=user.username %}"><div class="header-sub-container__back__block">&lt;</div></a>
-            </div>
-            <span class="header-sub-container__title">
-                {% block header-title %}住所の登録{% endblock %}
-            </span>
-        </div>
-    </div>
-</header>
-{% endblock %}
+{% block header-title %}住所の登録{% endblock %}
 
 {% block content %}
 <main>
@@ -45,6 +29,12 @@
                     <div class="first_name_field">{{ form.first_name_kana }}</div>
                 </div>
             </div> <!-- real_name_container -->
+
+            <div class="border_line_container">
+                <div class="border_line"></div>
+            </div>
+            
+
             <div class="address_container">
                 <div class="post">
                     <label for="id_post">郵便番号</label>
@@ -52,7 +42,7 @@
                 </div>
                 <div class="post">
                     <label for="id_prefecture">都道府県</label>
-                    <div class="prefecture">{{ form.prefecture }}</div>
+                    <div class="prefecture_field">{{ form.prefecture }}</div>
                 </div>
                 <div class="post">
                     <label for="id_city">市区町村</label>
@@ -65,6 +55,17 @@
                 <div class="post">
                     <label for="id_building">建物名</label>
                     <div class="building_field">{{ form.building }}</div>
+                </div>
+            </div>
+
+            <div class="border_line_container">
+                <div class="lower_border_line"></div>
+            </div>
+            
+            <div class="phone_container">
+                <div class="post">
+                    <label for="id_phone">電話番号</label>
+                    <div class="phone_field">{{ form.phone }}</div>
                 </div>
             </div>
             {% endwith %}
